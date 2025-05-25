@@ -11,3 +11,8 @@
 ```bash
 docker-compose up -d
 ```
+
+---
+
+## ERD
+![image](https://github.com/user-attachments/assets/07f221ef-8811-40fa-95f6-a5a212b8bbf0)
