@@ -1,0 +1,7 @@
+point-policy:
+  max-balance: 1000000
+  min-balance: 0
+
+lock:
+  time-out: 3000
+  retry-sleep: 500
