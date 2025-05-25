@@ -1,25 +1,25 @@
 package kr.hhplus.be.server.user.application.mapper;
 
 import kr.hhplus.be.server.user.domain.entity.User;
-import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequestDto;
-import kr.hhplus.be.server.user.presentation.dto.response.UserResponseDto;
+import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
+import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 
 public class UserMapper {
 
-    public static User toEntity(RegisterUserRequestDto request) {
+    public static User toEntity(RegisterUserRequest request) {
 
         return User.builder()
-                .userId(request.userId())
+                .email(request.email())
                 .name(request.name())
                 .type(request.type())
                 .build();
     }
 
-    public static UserResponseDto toDto(User user) {
+    public static UserResponse toDto(User user) {
 
-        return new UserResponseDto(
+        return new UserResponse(
                 user.getId(),
-                user.getUserId(),
+                user.getEmail(),
                 user.getName(),
                 user.getType()
         );

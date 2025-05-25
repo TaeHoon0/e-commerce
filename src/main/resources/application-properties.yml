@@ -1,6 +1,6 @@
 point-policy:
-  max-balance: 1000000
-  min-balance: 0
+  max-point: 1000000
+  min-point : 0
 
 lock:
   time-out: 3000

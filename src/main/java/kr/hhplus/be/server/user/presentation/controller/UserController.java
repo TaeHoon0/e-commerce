@@ -5,8 +5,8 @@ import jakarta.validation.constraints.Min;
 import kr.hhplus.be.server.common.dto.ApiResult;
 import kr.hhplus.be.server.user.application.mapper.UserMapper;
 import kr.hhplus.be.server.user.application.port.in.UserUseCase;
-import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequestDto;
-import kr.hhplus.be.server.user.presentation.dto.response.UserResponseDto;
+import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
+import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -21,11 +21,11 @@ public class UserController {
     private final UserUseCase userUseCase;
 
     @PostMapping("")
-    public ResponseEntity<ApiResult<UserResponseDto>> registerUser(
-            @RequestBody @Valid RegisterUserRequestDto request
+    public ResponseEntity<ApiResult<UserResponse>> registerUser(
+            @RequestBody @Valid RegisterUserRequest request
     ) {
 
-        UserResponseDto response = userUseCase.register(UserMapper.toEntity(request));
+        UserResponse response = userUseCase.register(UserMapper.toEntity(request));
 
         return ResponseEntity.ok(
             ApiResult.ok(response)
@@ -33,11 +33,11 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResult<UserResponseDto>> getUser(
+    public ResponseEntity<ApiResult<UserResponse>> getUser(
             @PathVariable(name = "id") @Min(1) Long id
     ) {
 
-        UserResponseDto response = userUseCase.get(id);
+        UserResponse response = userUseCase.get(id);
 
         return ResponseEntity.ok(
             ApiResult.ok(response)

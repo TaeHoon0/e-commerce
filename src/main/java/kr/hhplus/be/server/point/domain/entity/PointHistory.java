@@ -20,7 +20,7 @@ public class PointHistory extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tph_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Column(name = "tph_changed_amount", precision = 15, scale = 2, nullable = false)
     private BigDecimal changedAmount;
@@ -32,4 +32,13 @@ public class PointHistory extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "tph_tp_key", nullable = false)
     private Point point;
+
+    public static PointHistory from(Point point, BigDecimal changedAmount,  PointChangedType changedType) {
+
+        return PointHistory.builder()
+                .point(point)
+                .changedAmount(changedAmount)
+                .changedType(changedType)
+                .build();
+    }
 }

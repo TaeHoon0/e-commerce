@@ -13,16 +13,16 @@ public class ApiResult<T> {
     private String code;
 
     @Schema(name = "desc", description = "응답 메시지", example = "요청 성공", required = true)
-    private String desc;
+    private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Schema(description = "응답 데이터")
     private T result;
 
     @Builder
-    private ApiResult(String code, String desc, T result) {
+    private ApiResult(String code, String message, T result) {
         this.code = code;
-        this.desc = desc;
+        this.message = message;
         this.result = result;
     }
 
@@ -32,7 +32,7 @@ public class ApiResult<T> {
 
         return ApiResult.<T>builder()
                 .code(success.getCode())
-                .desc(success.getMessage())
+                .message(success.getMessage())
                 .result(null)
                 .build();
     }
@@ -43,8 +43,17 @@ public class ApiResult<T> {
 
         return ApiResult.<T>builder()
                 .code(success.getCode())
-                .desc(success.getMessage())
+                .message(success.getMessage())
                 .result(data)
+                .build();
+    }
+
+    public static <T> ApiResult<T> error(String code, String desc) {
+
+        return ApiResult.<T>builder()
+                .code(code)
+                .message(desc)
+                .result(null)
                 .build();
     }
 }

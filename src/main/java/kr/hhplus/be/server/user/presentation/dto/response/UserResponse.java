@@ -3,10 +3,10 @@ package kr.hhplus.be.server.user.presentation.dto.response;
 import kr.hhplus.be.server.user.domain.UserType;
 
 
-public record UserResponseDto (
+public record UserResponse(
 
      Long id,
-     String userId,
+     String email,
      String name,
      UserType type
 

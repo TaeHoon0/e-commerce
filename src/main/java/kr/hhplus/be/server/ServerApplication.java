@@ -1,5 +1,6 @@
 package kr.hhplus.be.server;
 
+import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.infrastructure.lock.PointLockManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -11,7 +12,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EntityScan(basePackages = "kr.hhplus.be.server")
 @EnableJpaRepositories(basePackages = "kr.hhplus.be.server")
 @EnableConfigurationProperties({
-		PointLockManager.class
+		PointLockManager.class,
+		PointPolicy.class
 })
 public class ServerApplication {
 

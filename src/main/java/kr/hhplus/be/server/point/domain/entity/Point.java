@@ -19,11 +19,27 @@ public class Point extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tp_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Column(name = "tp_amount", precision = 15, scale = 2, nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "tp_tu_key", nullable = false)
-    private Long userKey;
+    @Column(name = "tp_tu_key", nullable = false, unique = true)
+    private Long userId;
+
+    public void charge(BigDecimal amount) {
+        this.amount = this.amount.add(amount);
+    }
+
+    public void use(BigDecimal amount) {
+        this.amount = this.amount.subtract(amount);
+    }
+
+    public static Point createNew(Long userId) {
+
+        return Point.builder()
+                .userId(userId)
+                .amount(BigDecimal.ZERO)
+                .build();
+    }
 }

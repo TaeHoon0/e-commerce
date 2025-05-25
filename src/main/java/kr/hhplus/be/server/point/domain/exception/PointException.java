@@ -1,13 +1,13 @@
-package kr.hhplus.be.server.user.domain.exception;
+package kr.hhplus.be.server.point.domain.exception;
 
 import lombok.Getter;
 
 @Getter
-public class UserException extends RuntimeException {
+public class PointException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public UserException(ErrorCode errorCode) {
+    public PointException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
     }

@@ -20,8 +20,8 @@ public class User extends BaseTimeEntity {
     @Column(name = "tu_key", nullable = false)
     private Long id;
 
-    @Column(name = "tu_user_id", length = 30, nullable = false, unique = true)
-    private String userId;
+    @Column(name = "tu_email", length = 50, nullable = false, unique = true)
+    private String email;
 
     @Column(name = "tu_name", length = 30, nullable = false)
     private String name;

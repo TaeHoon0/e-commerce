@@ -8,7 +8,7 @@ import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.exception.ErrorCode;
 import kr.hhplus.be.server.user.domain.exception.UserException;
 import kr.hhplus.be.server.user.domain.repository.UserRepository;
-import kr.hhplus.be.server.user.presentation.dto.response.UserResponseDto;
+import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,10 +20,10 @@ public class UserUseCaseImpl implements UserUseCase {
 
     @Override
     @Transactional
-    public UserResponseDto register(User user) {
+    public UserResponse register(User user) {
 
         // 중복검사
-        if (userRepository.existsByUserId(user.getUserId())) {
+        if (userRepository.existsByEmail(user.getEmail())) {
             throw new UserException(ErrorCode.DUPLICATE_USER_ID);
         }
 
@@ -34,7 +34,7 @@ public class UserUseCaseImpl implements UserUseCase {
     }
 
     @Override
-    public UserResponseDto get(Long key) {
+    public UserResponse get(Long key) {
 
         User user = userRepository.findById(key)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));

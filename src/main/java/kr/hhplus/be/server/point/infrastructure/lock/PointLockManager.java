@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.point.infrastructure.lock;
 
+import kr.hhplus.be.server.point.domain.exception.ErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointException;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
@@ -28,7 +30,7 @@ public class PointLockManager {
             Thread.sleep(retrySleep);
         }
 
-        throw new IllegalArgumentException("락 획득 실패");
+        throw new PointException(ErrorCode.LOCK_ACQUISITION_FAILED);
     }
 
     public void releaseLock(long userId) {
