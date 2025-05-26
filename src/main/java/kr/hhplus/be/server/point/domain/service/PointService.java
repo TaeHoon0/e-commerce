@@ -19,7 +19,7 @@ public class PointService {
 
     public Point charge(Long userId, BigDecimal amount) {
 
-        Point point = pointRepository.findByUserId(userId)
+        Point point = pointRepository.findByUserIdWithLock(userId)
                 .orElseGet(() -> pointRepository.save(Point.createNew(userId)));
 
         // 보유한도 검증
@@ -32,7 +32,7 @@ public class PointService {
 
     public Point use(Long userId, BigDecimal amount) {
 
-        Point point = pointRepository.findByUserId(userId)
+        Point point = pointRepository.findByUserIdWithLock(userId)
                 .orElseThrow(() -> new PointException(ErrorCode.POINT_NOT_FOUND));
 
         pointPolicy.validateMinPoint(point.getAmount(), amount);

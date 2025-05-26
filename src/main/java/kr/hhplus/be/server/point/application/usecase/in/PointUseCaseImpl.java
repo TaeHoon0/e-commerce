@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.point.application.usecase.in;
 
+import jakarta.persistence.LockTimeoutException;
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.point.application.Mapper.PointMapper;
 import kr.hhplus.be.server.point.application.port.in.PointUseCase;
@@ -11,10 +12,10 @@ import kr.hhplus.be.server.point.domain.exception.PointException;
 import kr.hhplus.be.server.point.domain.repository.PointHistoryRepository;
 import kr.hhplus.be.server.point.domain.repository.PointRepository;
 import kr.hhplus.be.server.point.domain.service.PointService;
-import kr.hhplus.be.server.point.infrastructure.lock.PointLockManager;
 import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;
 import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.PessimisticLockException;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -24,7 +25,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PointUseCaseImpl implements PointUseCase {
 
-    private final PointLockManager pointLockManager;
     private final PointService pointService;
     private final PointRepository pointRepository;
     private final PointHistoryRepository pointHistoryRepository;
@@ -39,22 +39,15 @@ public class PointUseCaseImpl implements PointUseCase {
         Point point;
 
         try {
-
-            // 락 획득 시도
-            pointLockManager.getLock(userId);
-
             // 포인트 충전
             point = pointService.charge(userId, amount);
 
             // 이력 저장
             pointHistoryRepository.save(PointHistory.from(point, amount, changedType));
 
-        } catch (InterruptedException e) {
+        } catch (PessimisticLockException | LockTimeoutException e) {
 
-            throw new PointException(ErrorCode.INTERNAL_POINT_ERROR);
-        } finally {
-
-            pointLockManager.releaseLock(userId);
+            throw new PointException(ErrorCode.LOCK_ACQUISITION_FAILED);
         }
 
         return PointMapper.toDto(point);
@@ -70,22 +63,15 @@ public class PointUseCaseImpl implements PointUseCase {
         Point point;
 
         try {
-
-            // 락 획득 시도
-            pointLockManager.getLock(userId);
-
-            // 포인트 충전
+            // 포인트 사용
             point = pointService.use(userId, amount);
 
             // 이력 저장
             pointHistoryRepository.save(PointHistory.from(point, amount, changedType));
 
-        } catch (InterruptedException e) {
+        } catch (PessimisticLockException | LockTimeoutException e) {
 
-            throw new PointException(ErrorCode.INTERNAL_POINT_ERROR);
-        } finally {
-
-            pointLockManager.releaseLock(userId);
+            throw new PointException(ErrorCode.LOCK_ACQUISITION_FAILED);
         }
 
         return PointMapper.toDto(point);
