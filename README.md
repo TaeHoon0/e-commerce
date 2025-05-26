@@ -15,4 +15,4 @@ docker-compose up -d
 ---
 
 ## ERD
-![image](https://github.com/user-attachments/assets/a815170a-60c8-4c0b-81a8-b4e549c8fb50)
+![image](https://github.com/user-attachments/assets/fea57b92-fbed-4e7e-a127-5ae1eb46cde0)
