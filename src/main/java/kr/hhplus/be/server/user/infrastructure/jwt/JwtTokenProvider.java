@@ -1,18 +1,23 @@
-package kr.hhplus.be.server.global.config.jwt;
+package kr.hhplus.be.server.user.infrastructure.jwt;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import kr.hhplus.be.server.user.domain.UserType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.ZonedDateTime;
 import java.util.Date;
 
+@Slf4j
 @Component
 public class JwtTokenProvider {
 
@@ -23,7 +28,7 @@ public class JwtTokenProvider {
     public JwtTokenProvider(
             @Value("${jwt.secret-key}") final String secretKey,
             @Value("${jwt.access-token-expiration-time}") final long accessTokenExpireTime,
-            @Value("${jwt.refresh-token-expiration-time}" final long refreshTokenExpireTime
+            @Value("${jwt.refresh-token-expiration-time}") final long refreshTokenExpireTime
     ) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
@@ -31,7 +36,10 @@ public class JwtTokenProvider {
         this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
-    public String createAccessToken(UserDetails userDetails) {}
+    public String createAccessToken(Long userId, UserType userType) {
+
+        return createToken(userId, userType.name(), accessTokenExpireTime);
+    }
 
     /**
      * JWT Token 생성
@@ -52,5 +60,24 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-
+    /**
+     * JWT 검증
+     * @param token
+     * @return IsValidate
+     */
+    public boolean isValidToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            return true;
+        } catch (SecurityException | MalformedJwtException e) {
+            log.info("Invalid JWT", e);
+        } catch (ExpiredJwtException e) {
+            log.info("Expired JWT", e);
+        } catch (UnsupportedJwtException e) {
+            log.info("Unsupported JWT", e);
+        } catch (IllegalArgumentException e) {
+            log.info("JWT claims string is empty", e);
+        }
+        return false;
+    }
 }

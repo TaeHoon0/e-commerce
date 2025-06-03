@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.user.domain.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import kr.hhplus.be.server.user.domain.UserType;
 import lombok.*;
 
@@ -32,4 +33,11 @@ public class User extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "tu_type", length = 6, nullable = false)
     private UserType type;
+
+    @Column(name = "tu_last_login_date")
+    private LocalDateTime lastLoginDate;
+
+    public void updateLoginDate() {
+        this.lastLoginDate = LocalDateTime.now();
+    }
 }
