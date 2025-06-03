@@ -48,7 +48,6 @@ dependencies {
 
 	// Spring Security
 	implementation("org.springframework.boot:spring-boot-starter-security")
-	implementation("org.springdoc:springdoc-openapi-starter-security:2.5.0")
 
 	// JWT
 	implementation("io.jsonwebtoken:jjwt-api:0.11.5")

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.user.presentation.dto.response;
 
-public record UserLoginResponse (
+public record LoginUserResponse(
 
     String accessToken,
 

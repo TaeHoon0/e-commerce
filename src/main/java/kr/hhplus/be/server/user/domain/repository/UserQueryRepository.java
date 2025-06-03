@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserQueryRepository {
 
-    boolean existsByEmail(String userId);
-
     Optional<User> findById(Long id);
+
+    Optional<User> findByEmail(String email);
 }

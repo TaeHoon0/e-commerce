@@ -37,6 +37,17 @@ public class User extends BaseTimeEntity {
     @Column(name = "tu_last_login_date")
     private LocalDateTime lastLoginDate;
 
+
+    public static User create(String email, String password, String name, UserType type) {
+
+        return User.builder()
+                .email(email)
+                .password(password)
+                .name(name)
+                .type(type)
+                .build();
+    }
+
     public void updateLoginDate() {
         this.lastLoginDate = LocalDateTime.now();
     }

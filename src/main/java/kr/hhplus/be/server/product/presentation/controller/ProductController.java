@@ -23,15 +23,15 @@ import java.util.List;
 public class ProductController {
 
     private final ProductUseCase productUseCase;
-
-    @GetMapping
-    public ResponseEntity<ApiResult<List<ProductResponse>>> searchProducts(
-            @RequestParam(required = false, value = "name") String name,
-            @RequestParam(required = false, value = "page", defaultValue = "0") int page,
-            @RequestParam(required = false, value = "size", defaultValue = "10") int size
-    ) {
-        return productService.getAllProducts();
-    }
+//
+//    @GetMapping
+//    public ResponseEntity<ApiResult<List<ProductResponse>>> searchProducts(
+//            @RequestParam(required = false, value = "name") String name,
+//            @RequestParam(required = false, value = "page", defaultValue = "0") int page,
+//            @RequestParam(required = false, value = "size", defaultValue = "10") int size
+//    ) {
+//        return productService.getAllProducts();
+//    }
 
     @GetMapping("/{productId}")
     public ResponseEntity<ApiResult<ProductResponse>> getProduct(@PathVariable Long productId) {
@@ -96,16 +96,16 @@ public class ProductController {
         );
     }
 
-    @PutMapping("/{productId}/options/{optionId}")
-    public void updateOption(@PathVariable Long productId,
-                             @PathVariable Long optionId,
-                             @RequestBody UpdateProductOptionRequest request) {
-        productService.updateProductOption(productId, optionId, request);
-    }
-
-    @GetMapping("/{productId}/options/{optionId}/histories")
-    public List<ProductOptionHistoryResponse> getOptionHistories(@PathVariable Long productId,
-                                                                 @PathVariable Long optionId) {
-        return productService.getOptionHistories(productId, optionId);
-    }
+//    @PutMapping("/{productId}/options/{optionId}")
+//    public void updateOption(@PathVariable Long productId,
+//                             @PathVariable Long optionId,
+//                             @RequestBody UpdateProductOptionRequest request) {
+//        productService.updateProductOption(productId, optionId, request);
+//    }
+//
+//    @GetMapping("/{productId}/options/{optionId}/histories")
+//    public List<ProductOptionHistoryResponse> getOptionHistories(@PathVariable Long productId,
+//                                                                 @PathVariable Long optionId) {
+//        return productService.getOptionHistories(productId, optionId);
+//    }
 }

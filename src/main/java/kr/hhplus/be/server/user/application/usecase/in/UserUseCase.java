@@ -2,46 +2,70 @@ package kr.hhplus.be.server.user.application.usecase.in;
 
 
 import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.global.config.jwt.JwtTokenProvider;
+import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
 import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
-import kr.hhplus.be.server.user.application.dto.response.GetUserResult;
+import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
 import kr.hhplus.be.server.user.application.dto.response.UserResult;
 import kr.hhplus.be.server.user.application.mapper.UserApplicationMapper;
 import kr.hhplus.be.server.user.application.port.in.UserPort;
+import kr.hhplus.be.server.user.application.port.out.PasswordEncoderPort;
 import kr.hhplus.be.server.user.domain.entity.User;
-import kr.hhplus.be.server.user.domain.exception.ErrorCode;
+import kr.hhplus.be.server.user.domain.exception.UserErrorCode;
 import kr.hhplus.be.server.user.domain.exception.UserException;
 import kr.hhplus.be.server.user.domain.repository.UserCommandRepository;
 import kr.hhplus.be.server.user.domain.repository.UserQueryRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 @AllArgsConstructor
 public class UserUseCase implements UserPort {
 
     private final UserQueryRepository userQueryRepository;
     private final UserCommandRepository userCommandRepository;
+    private final PasswordEncoderPort passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     @Transactional
     public UserResult register(RegisterUserCommand command) {
 
-        // 중복검사
-        if (userQueryRepository.existsByEmail(command.email()))
-            throw new UserException(ErrorCode.DUPLICATE_USER_ID);
+        // 중복 검사
+        if(userQueryRepository.findByEmail(command.email()).isPresent())
+            throw new UserException(UserErrorCode.DUPLICATE_USER_EMAIL);
 
         // 저장
-        User savedUser = userCommandRepository.save(UserApplicationMapper.toEntity(command));
+        User user = User.create(command.email(), passwordEncoder.encode(command.password()), command.name(), command.type());
 
-        return UserApplicationMapper.toDto(savedUser);
+        user = userCommandRepository.save(user);
+
+        return UserApplicationMapper.toDto(user);
     }
 
     @Override
     public UserResult get(Long key) {
 
         User user = userQueryRepository.findById(key)
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
         return UserApplicationMapper.toDto(user);
+    }
+
+    @Override
+    public LoginUserResult login(LoginUserCommand command) {
+
+        User user = userQueryRepository.findByEmail(command.email())
+                .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
+
+        if(!passwordEncoder.matches(command.password(), user.getPassword()))
+            throw new UserException(UserErrorCode.NOT_MATCHED_PASSWORD);
+
+        user.updateLoginDate();
+
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getType());
+        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getType());
+
+        return new LoginUserResult(accessToken, refreshToken);
     }
 }

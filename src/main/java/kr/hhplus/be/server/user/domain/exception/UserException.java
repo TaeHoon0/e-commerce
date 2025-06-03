@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class UserException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final UserErrorCode userErrorCode;
 
-    public UserException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public UserException(UserErrorCode userErrorCode) {
+        super(userErrorCode.getMessage());
+        this.userErrorCode = userErrorCode;
     }
 }

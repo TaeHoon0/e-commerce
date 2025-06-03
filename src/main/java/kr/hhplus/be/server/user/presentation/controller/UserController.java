@@ -3,11 +3,12 @@ package kr.hhplus.be.server.user.presentation.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import kr.hhplus.be.server.global.dto.ApiResult;
+import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
 import kr.hhplus.be.server.user.application.dto.response.UserResult;
 import kr.hhplus.be.server.user.application.port.in.UserPort;
 import kr.hhplus.be.server.user.presentation.dto.request.LoginUserRequest;
 import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
-import kr.hhplus.be.server.user.presentation.dto.response.UserLoginResponse;
+import kr.hhplus.be.server.user.presentation.dto.response.LoginUserResponse;
 import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 import kr.hhplus.be.server.user.presentation.mapper.UserPresentationMapper;
 import lombok.RequiredArgsConstructor;
@@ -48,14 +49,14 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResult<UserLoginResponse>> login(
+    public ResponseEntity<ApiResult<LoginUserResponse>> login(
         @RequestBody @Valid LoginUserRequest request
     ) {
 
-        userPort.login(UserPresentationMapper.toLoginCommand(request));
+        LoginUserResult result = userPort.login(UserPresentationMapper.toLoginCommand(request));
 
         return ResponseEntity.ok(
-            ApiResult.ok()
+            ApiResult.ok(UserPresentationMapper.toResponse(result))
         );
     }
 }

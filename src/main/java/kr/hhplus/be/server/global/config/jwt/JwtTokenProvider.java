@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.user.infrastructure.jwt;
+package kr.hhplus.be.server.global.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -41,6 +41,11 @@ public class JwtTokenProvider {
         return createToken(userId, userType.name(), accessTokenExpireTime);
     }
 
+    public String createRefreshToken(Long userId, UserType userType) {
+
+        return createToken(userId, userType.name(), refreshTokenExpireTime);
+    }
+
     /**
      * JWT Token 생성
      */
@@ -62,22 +67,22 @@ public class JwtTokenProvider {
 
     /**
      * JWT 검증
-     * @param token
-     * @return IsValidate
      */
     public boolean isValidToken(String token) {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+
             return true;
         } catch (SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT", e);
+            log.info("Invalid JWT : {}", token);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT", e);
+            log.info("Expired JWT : {}", token);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT", e);
+            log.info("Unsupported JWT: {}", token);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty", e);
+            log.info("JWT claims string is empty : {}", token);
         }
+
         return false;
     }
 }

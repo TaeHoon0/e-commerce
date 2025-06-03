@@ -15,8 +15,8 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResult<Void>> handleUserException(UserException e) {
 
         return ResponseEntity
-                .status(e.getErrorCode().getStatus())
-                .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
+                .status(e.getUserErrorCode().getStatus())
+                .body(ApiResult.error(e.getUserErrorCode().getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(value = PointException.class)
