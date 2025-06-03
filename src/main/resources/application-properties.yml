@@ -2,6 +2,7 @@ point-policy:
   max-point: 1000000
   min-point : 0
 
-lock:
-  time-out: 3000
-  retry-sleep: 500
+jwt:
+  secret-key: hh99
+  access-token-expiration-time: 1800000  # 30분
+  refresh-token-expiration-time: 10800000 # 3시간

@@ -2,7 +2,7 @@ package kr.hhplus.be.server.point.application.usecase.in;
 
 import jakarta.persistence.LockTimeoutException;
 import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.point.application.Mapper.PointMapper;
+import kr.hhplus.be.server.point.application.mapper.PointMapper;
 import kr.hhplus.be.server.point.application.port.in.PointUseCase;
 import kr.hhplus.be.server.point.domain.PointChangedType;
 import kr.hhplus.be.server.point.domain.entity.Point;

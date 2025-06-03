@@ -4,5 +4,6 @@ public enum ProductChangedType {
 
     IN, // 입고
     ORDER,
+    ROLLBACK,
     REFUND
 }

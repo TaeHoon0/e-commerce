@@ -2,7 +2,7 @@ package kr.hhplus.be.server.point.presentation.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import kr.hhplus.be.server.common.dto.ApiResult;
+import kr.hhplus.be.server.global.dto.ApiResult;
 import kr.hhplus.be.server.point.application.port.in.PointUseCase;
 import kr.hhplus.be.server.point.presentation.dto.request.PointRequest;
 import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;

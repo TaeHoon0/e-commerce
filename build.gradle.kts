@@ -46,7 +46,23 @@ dependencies {
 	// swagger
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0")
 
-    // DB
+	// Spring Security
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springdoc:springdoc-openapi-starter-security:2.5.0")
+
+	// JWT
+	implementation("io.jsonwebtoken:jjwt-api:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-impl:0.11.5")
+	runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.11.5")
+
+	// querydsl for spring boot 3.x
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	// java.lang.NoClassDefFoundError(jakarta.persistence.Entity) 발생 대응
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+
+
+	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
 
     // Test
@@ -57,7 +73,11 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-	systemProperty("user.timezone", "UTC")
+sourceSets.main {
+	java.srcDir("build/generated/sources/annotationProcessor/java/main")
 }
+
+//tasks.withType<Test> {
+//	useJUnitPlatform()
+//	systemProperty("user.timezone", "UTC")
+//}

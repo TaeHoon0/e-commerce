@@ -1,12 +1,10 @@
-package kr.hhplus.be.server.point.application.Mapper;
+package kr.hhplus.be.server.point.application.mapper;
 
 import kr.hhplus.be.server.point.domain.entity.Point;
 
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
 import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;
 import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
-
-import java.math.BigDecimal;
 
 public class PointMapper {
 

@@ -34,4 +34,13 @@ public class ProductOption extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tpo_tp_key", nullable = false)
     private Product product;
+
+    public static ProductOption createNew(String optionName, Integer quantity, BigDecimal price) {
+
+        return ProductOption.builder()
+                .optionName(optionName)
+                .quantity(quantity)
+                .price(price)
+                .build();
+    }
 }
