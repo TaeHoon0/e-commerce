@@ -2,7 +2,7 @@ package kr.hhplus.be.server.user.application.usecase.in;
 
 
 import jakarta.transaction.Transactional;
-import kr.hhplus.be.server.global.config.jwt.JwtTokenProvider;
+import kr.hhplus.be.server.global.config.jwt.JwtUtil;
 import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
 import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
 import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
@@ -25,7 +25,7 @@ public class UserUseCase implements UserPort {
     private final UserQueryRepository userQueryRepository;
     private final UserCommandRepository userCommandRepository;
     private final PasswordEncoderPort passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtil jwtUtil;
 
     @Override
     @Transactional
@@ -63,8 +63,8 @@ public class UserUseCase implements UserPort {
 
         user.updateLoginDate();
 
-        String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getType());
-        String refreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getType());
+        String accessToken = jwtUtil.createAccessToken(user.getId(), user.getType());
+        String refreshToken = jwtUtil.createRefreshToken(user.getId(), user.getType());
 
         return new LoginUserResult(accessToken, refreshToken);
     }

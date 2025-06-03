@@ -13,6 +13,7 @@ import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 import kr.hhplus.be.server.user.presentation.mapper.UserPresentationMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,6 +37,7 @@ public class UserController {
         );
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<ApiResult<UserResponse>> getUser(
             @PathVariable(name = "id") @Min(1) Long id

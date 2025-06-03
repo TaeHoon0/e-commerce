@@ -19,13 +19,13 @@ import java.util.Date;
 
 @Slf4j
 @Component
-public class JwtTokenProvider {
+public class JwtUtil {
 
     private final Key key;
     private final long accessTokenExpireTime;
     private final long refreshTokenExpireTime;
 
-    public JwtTokenProvider(
+    public JwtUtil(
             @Value("${jwt.secret-key}") final String secretKey,
             @Value("${jwt.access-token-expiration-time}") final long accessTokenExpireTime,
             @Value("${jwt.refresh-token-expiration-time}") final long refreshTokenExpireTime
@@ -84,5 +84,26 @@ public class JwtTokenProvider {
         }
 
         return false;
+    }
+
+    public Long getUserId(String accessToken) {
+        return parseClaims(accessToken).get("userId", Long.class);
+    }
+
+    public String getUserType(String accessToken) {
+        return parseClaims(accessToken).get("userType", String.class);
+    }
+
+
+    private Claims parseClaims(String accessToken) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(accessToken)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 }
