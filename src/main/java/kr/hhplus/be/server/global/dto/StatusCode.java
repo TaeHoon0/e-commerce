@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.common.dto;
+package kr.hhplus.be.server.global.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

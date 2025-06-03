@@ -1,7 +1,8 @@
 package kr.hhplus.be.server.user.infrastructure.persistence;
 
 import kr.hhplus.be.server.user.domain.entity.User;
-import kr.hhplus.be.server.user.domain.repository.UserRepository;
+import kr.hhplus.be.server.user.domain.repository.UserCommandRepository;
+import kr.hhplus.be.server.user.domain.repository.UserQueryRepository;
 import kr.hhplus.be.server.user.infrastructure.persistence.jpa.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl implements UserQueryRepository, UserCommandRepository {
 
     private final UserJpaRepository jpaRepository;
 

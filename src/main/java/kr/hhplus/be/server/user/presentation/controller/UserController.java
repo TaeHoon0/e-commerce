@@ -2,7 +2,7 @@ package kr.hhplus.be.server.user.presentation.controller;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
-import kr.hhplus.be.server.common.dto.ApiResult;
+import kr.hhplus.be.server.global.dto.ApiResult;
 import kr.hhplus.be.server.user.application.mapper.UserMapper;
 import kr.hhplus.be.server.user.application.port.in.UserUseCase;
 import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserUseCase userUseCase;

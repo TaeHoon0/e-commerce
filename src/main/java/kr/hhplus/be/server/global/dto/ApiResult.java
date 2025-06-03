@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.common.dto;
+package kr.hhplus.be.server.global.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
