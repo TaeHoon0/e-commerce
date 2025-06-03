@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 
 @Getter
 @AllArgsConstructor
-public enum ErrorCode {
+public enum PointErrorCode {
 
     POINT_NOT_FOUND(HttpStatus.NOT_FOUND, "4041001", "포인트 정보를 찾을 수 없습니다."),
     EXCEEDS_MAX_POINT(HttpStatus.BAD_REQUEST, "4001002", "보유 포인트 한도를 초과합니다."),

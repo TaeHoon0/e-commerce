@@ -3,7 +3,7 @@ package kr.hhplus.be.server.point.presentation.controller;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import kr.hhplus.be.server.global.dto.ApiResult;
-import kr.hhplus.be.server.point.application.port.in.PointUseCase;
+import kr.hhplus.be.server.point.application.port.in.PointPort;
 import kr.hhplus.be.server.point.presentation.dto.request.PointRequest;
 import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;
 import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
@@ -20,14 +20,14 @@ import java.util.List;
 @RequestMapping("/points")
 public class PointController {
 
-    private final PointUseCase pointUseCase;
+    private final PointPort pointPort;
 
     @GetMapping("{userId}")
     public ResponseEntity<ApiResult<PointResponse>> getPoint(
             @PathVariable @Min(1) long userId
     ) {
 
-        PointResponse response = pointUseCase.getPoint(userId);
+        PointResponse response = pointPort.getPoint(userId);
 
         return ResponseEntity.ok(
                 ApiResult.ok(response)
@@ -39,7 +39,7 @@ public class PointController {
             @PathVariable @Min(1) long userId
     ) {
 
-        List<PointHistoryResponse> response = pointUseCase.getPointHistories(userId);
+        List<PointHistoryResponse> response = pointPort.getPointHistories(userId);
 
         return ResponseEntity.ok(
                 ApiResult.ok(response)
@@ -52,7 +52,7 @@ public class PointController {
             @RequestBody @Valid PointRequest request
     ) {
 
-        PointResponse response = pointUseCase.chargePoint(userId, request.amount(), request.changedType());
+        PointResponse response = pointPort.chargePoint(userId, request.amount(), request.changedType());
 
         return ResponseEntity.ok(
                 ApiResult.ok(response)
@@ -65,7 +65,7 @@ public class PointController {
             @RequestBody @Valid PointRequest request
     ) {
 
-        PointResponse response = pointUseCase.usePoint(userId, request.amount(), request.changedType());
+        PointResponse response = pointPort.usePoint(userId, request.amount(), request.changedType());
 
         return ResponseEntity.ok(
                 ApiResult.ok(response)

@@ -23,8 +23,8 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResult<Void>> handlePointException(PointException e) {
 
         return ResponseEntity
-                .status(e.getErrorCode().getStatus())
-                .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
+                .status(e.getPointErrorCode().getStatus())
+                .body(ApiResult.error(e.getPointErrorCode().getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(value = ProductException.class)

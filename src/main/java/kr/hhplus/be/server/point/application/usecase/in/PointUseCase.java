@@ -3,11 +3,11 @@ package kr.hhplus.be.server.point.application.usecase.in;
 import jakarta.persistence.LockTimeoutException;
 import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.point.application.mapper.PointMapper;
-import kr.hhplus.be.server.point.application.port.in.PointUseCase;
+import kr.hhplus.be.server.point.application.port.in.PointPort;
 import kr.hhplus.be.server.point.domain.PointChangedType;
 import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
-import kr.hhplus.be.server.point.domain.exception.ErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import kr.hhplus.be.server.point.domain.repository.PointHistoryRepository;
 import kr.hhplus.be.server.point.domain.repository.PointRepository;
@@ -23,7 +23,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class PointUseCaseImpl implements PointUseCase {
+public class PointUseCase implements PointPort {
 
     private final PointService pointService;
     private final PointRepository pointRepository;
@@ -47,7 +47,7 @@ public class PointUseCaseImpl implements PointUseCase {
 
         } catch (PessimisticLockException | LockTimeoutException e) {
 
-            throw new PointException(ErrorCode.LOCK_ACQUISITION_FAILED);
+            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
         }
 
         return PointMapper.toDto(point);
@@ -71,7 +71,7 @@ public class PointUseCaseImpl implements PointUseCase {
 
         } catch (PessimisticLockException | LockTimeoutException e) {
 
-            throw new PointException(ErrorCode.LOCK_ACQUISITION_FAILED);
+            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
         }
 
         return PointMapper.toDto(point);
@@ -81,7 +81,7 @@ public class PointUseCaseImpl implements PointUseCase {
     public PointResponse getPoint(Long userId) {
 
         Point point = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new PointException(ErrorCode.POINT_NOT_FOUND));
+                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
 
         return PointMapper.toDto(point);
     }
@@ -90,7 +90,7 @@ public class PointUseCaseImpl implements PointUseCase {
     public List<PointHistoryResponse> getPointHistories(Long userId) {
 
         Point point = pointRepository.findByUserId(userId)
-                .orElseThrow(() -> new PointException(ErrorCode.POINT_NOT_FOUND));
+                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
 
         List<PointHistory> pointHistories = pointHistoryRepository.findAllByPointId(point.getId());
 

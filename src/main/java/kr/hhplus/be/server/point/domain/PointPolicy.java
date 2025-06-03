@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.point.domain;
 
-import kr.hhplus.be.server.point.domain.exception.ErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +21,7 @@ public class PointPolicy {
         BigDecimal afterAmount = currentPoint.add(amount);
 
         if (afterAmount.compareTo(maxPoint) > 0) {
-            throw new PointException(ErrorCode.EXCEEDS_MAX_POINT);
+            throw new PointException(PointErrorCode.EXCEEDS_MAX_POINT);
         }
     }
 
@@ -30,7 +30,7 @@ public class PointPolicy {
         BigDecimal afterAmount = currentPoint.subtract(amount);
 
         if (afterAmount.compareTo(minPoint) < 0) {
-            throw new PointException(ErrorCode.BELOW_MIN_POINT);
+            throw new PointException(PointErrorCode.BELOW_MIN_POINT);
         }
     }
 }

@@ -7,7 +7,7 @@ import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
 import java.math.BigDecimal;
 import java.util.List;
 
-public interface PointUseCase {
+public interface PointPort {
 
     /**
      * 포인트 충전

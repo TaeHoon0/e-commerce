@@ -2,7 +2,7 @@ package kr.hhplus.be.server.point.domain.service;
 
 import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.domain.entity.Point;
-import kr.hhplus.be.server.point.domain.exception.ErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import kr.hhplus.be.server.point.domain.repository.PointRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +33,7 @@ public class PointService {
     public Point use(Long userId, BigDecimal amount) {
 
         Point point = pointRepository.findByUserIdWithLock(userId)
-                .orElseThrow(() -> new PointException(ErrorCode.POINT_NOT_FOUND));
+                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
 
         pointPolicy.validateMinPoint(point.getAmount(), amount);
 

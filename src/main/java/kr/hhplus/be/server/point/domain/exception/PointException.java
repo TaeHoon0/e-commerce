@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class PointException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final PointErrorCode pointErrorCode;
 
-    public PointException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public PointException(PointErrorCode pointErrorCode) {
+        super(pointErrorCode.getMessage());
+        this.pointErrorCode = pointErrorCode;
     }
 }

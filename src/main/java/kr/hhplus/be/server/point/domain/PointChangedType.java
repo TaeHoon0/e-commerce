@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.point.domain;
 
-import kr.hhplus.be.server.point.domain.exception.ErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,13 +27,13 @@ public enum PointChangedType {
     // 각 도메인 메서드에 허용 가능한 타입인지 검사
     public void validateForCharge() {
         if (!this.isIncreaseType()) {
-            throw new PointException(ErrorCode.INVALID_CHANGED_TYPE);
+            throw new PointException(PointErrorCode.INVALID_CHANGED_TYPE);
         }
     }
 
     public void validateForUse() {
         if (!this.isDecreaseType()) {
-            throw new PointException(ErrorCode.INVALID_CHANGED_TYPE);
+            throw new PointException(PointErrorCode.INVALID_CHANGED_TYPE);
         }
     }
 }
