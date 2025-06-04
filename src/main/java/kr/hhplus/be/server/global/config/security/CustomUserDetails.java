@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.global.config.security;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Getter
-@Builder
 @AllArgsConstructor
 public class CustomUserDetails implements UserDetails {
 

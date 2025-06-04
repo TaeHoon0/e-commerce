@@ -36,14 +36,14 @@ public class JwtUtil {
         this.refreshTokenExpireTime = refreshTokenExpireTime;
     }
 
-    public String createAccessToken(Long userId, UserType userType) {
+    public String createAccessToken(Long userId, String email, String userType) {
 
-        return createToken(userId, userType.name(), accessTokenExpireTime);
+        return createToken(userId, email, userType, accessTokenExpireTime);
     }
 
-    public String createRefreshToken(Long userId, UserType userType) {
+    public String createRefreshToken(Long userId, String email, String userType) {
 
-        return createToken(userId, userType.name(), refreshTokenExpireTime);
+        return createToken(userId, email, userType, refreshTokenExpireTime);
     }
 
     /**

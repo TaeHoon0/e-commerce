@@ -63,8 +63,8 @@ public class UserUseCase implements UserPort {
 
         user.updateLoginDate();
 
-        String accessToken = jwtUtil.createAccessToken(user.getId(), user.getType());
-        String refreshToken = jwtUtil.createRefreshToken(user.getId(), user.getType());
+        String accessToken = jwtUtil.createAccessToken(user.getId(), user.getEmail(), user.getType().name());
+        String refreshToken = jwtUtil.createRefreshToken(user.getId(), user.getEmail(), user.getType().name());
 
         return new LoginUserResult(accessToken, refreshToken);
     }
