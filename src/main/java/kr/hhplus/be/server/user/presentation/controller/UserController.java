@@ -10,7 +10,8 @@ import kr.hhplus.be.server.user.presentation.dto.request.LoginUserRequest;
 import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
 import kr.hhplus.be.server.user.presentation.dto.response.LoginUserResponse;
 import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
-import kr.hhplus.be.server.user.presentation.mapper.UserPresentationMapper;
+import kr.hhplus.be.server.user.presentation.mapper.UserRequestMapper;
+import kr.hhplus.be.server.user.presentation.mapper.UserResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -30,10 +31,10 @@ public class UserController {
             @RequestBody @Valid RegisterUserRequest request
     ) {
 
-        UserResult result = userPort.register(UserPresentationMapper.toRegisterCommand(request));
+        UserResult result = userPort.register(UserRequestMapper.toRegisterCommand(request));
 
         return ResponseEntity.ok(
-            ApiResult.ok(UserPresentationMapper.toResponse(result))
+            ApiResult.ok(UserResponseMapper.toResponse(result))
         );
     }
 
@@ -46,7 +47,7 @@ public class UserController {
         UserResult result = userPort.get(id);
 
         return ResponseEntity.ok(
-            ApiResult.ok(UserPresentationMapper.toResponse(result))
+            ApiResult.ok(UserResponseMapper.toResponse(result))
         );
     }
 
@@ -55,10 +56,10 @@ public class UserController {
         @RequestBody @Valid LoginUserRequest request
     ) {
 
-        LoginUserResult result = userPort.login(UserPresentationMapper.toLoginCommand(request));
+        LoginUserResult result = userPort.login(UserRequestMapper.toLoginCommand(request));
 
         return ResponseEntity.ok(
-            ApiResult.ok(UserPresentationMapper.toResponse(result))
+            ApiResult.ok(UserResponseMapper.toResponse(result))
         );
     }
 }

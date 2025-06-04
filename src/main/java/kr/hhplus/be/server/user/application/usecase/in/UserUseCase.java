@@ -7,7 +7,7 @@ import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
 import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
 import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
 import kr.hhplus.be.server.user.application.dto.response.UserResult;
-import kr.hhplus.be.server.user.application.mapper.UserApplicationMapper;
+import kr.hhplus.be.server.user.application.mapper.UserResultMapper;
 import kr.hhplus.be.server.user.application.port.in.UserPort;
 import kr.hhplus.be.server.user.application.port.out.PasswordEncoderPort;
 import kr.hhplus.be.server.user.domain.entity.User;
@@ -40,7 +40,7 @@ public class UserUseCase implements UserPort {
 
         user = userCommandRepository.save(user);
 
-        return UserApplicationMapper.toDto(user);
+        return UserResultMapper.toDto(user);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class UserUseCase implements UserPort {
         User user = userQueryRepository.findById(key)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
-        return UserApplicationMapper.toDto(user);
+        return UserResultMapper.toDto(user);
     }
 
     @Override
