@@ -49,9 +49,10 @@ public class JwtUtil {
     /**
      * JWT Token 생성
      */
-    private String createToken(long userId, String userType, long expireTime) {
+    private String createToken(long userId, String email, String userType, long expireTime) {
         Claims claims = Jwts.claims();
         claims.put("userId", userId);
+        claims.put("email", email);
         claims.put("userType", userType);
 
         ZonedDateTime now = ZonedDateTime.now();
@@ -88,6 +89,10 @@ public class JwtUtil {
 
     public Long getUserId(String accessToken) {
         return parseClaims(accessToken).get("userId", Long.class);
+    }
+
+    public String getEmail(String accessToken) {
+        return parseClaims(accessToken).get("email", String.class);
     }
 
     public String getUserType(String accessToken) {
