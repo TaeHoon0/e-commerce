@@ -1,0 +1,102 @@
+@startuml
+
+!define SHOW_NOTE ' 노트 표시 여부 ( 비활성화 시 주석 처리 ) '
+Title 주문 \n\
+
+'---------------------------------------------------
+' 스킨 정의
+'---------------------------------------------------
+
+skinparam Shadowing true
+
+'skinparam arrow {
+'  FontName Consolas
+'  FontSize 10
+'}
+
+skinparam participant {
+  BackgroundColor BUSINESS
+  BorderColor DARKRED
+  BorderThickness 1
+}
+
+skinparam database {
+  BackgroundColor DATABASE
+  BorderColor DARKRED
+}
+
+skinparam actor {
+  BackgroundColor ACTOR
+  BorderColor DARKRED
+  BorderThickness 2
+}
+
+skinparam sequence {
+  ArrowColor DARKRED
+  LifeLineBorderColor DARKRED
+  BoxBackgroundColor WHITE
+  BoxFontColor RoyalBlue
+  LifeLineBackgroundColor #FFBBBB
+}
+
+skinparam note {
+  BackgroundColor GOLD
+  BorderThickness 1
+  FontSize 8
+}
+
+'=====================================
+'링크 되지 않응 항목 숨김
+'=====================================
+hide unlinked
+
+' 리턴 메시지 박스 위치 ( 아래 )
+skinparam responseMessageBelowArrow true
+' 자동 넘버링
+autonumber "<B>[00]"
+
+'---------------------------------------------------
+' 객체 정의
+'---------------------------------------------------
+!pragma teoz true
+
+box "<사용자>"
+  participant "USER"             as USER
+end box
+box "<서버>"
+    participant "ORDER"           as ORDER
+    participant "POINT"           as POINT
+    participant "COUPON"           as COUPON
+    participant "PRODUCT"           as PRODUCT
+    database    "DB"                as DB
+end box
+
+'---------------------------------------------------
+' OwnerGW Sequence Diagram v.0.0.0.1
+'---------------------------------------------------
+
+USER -> ORDER : * Method\t : POST \n* API\t\t : /api/orders/ready
+
+ACTIVATE ORDER
+
+  ORDER -> DB : 주문 준비 생성
+  ACTIVATE DB
+
+  return 주문 내역
+
+return response : 주문 내역
+
+USER -> ORDER : * Method\t : POST \n* API\t\t : /api/orders/confirm
+
+    ACTIVATE ORDER
+        ORDER -> POINT : 포인트 차감
+        ORDER -> COUPON : 쿠폰 사용
+        ORDER -> PRODUCT : 재고 차감
+        ORDER -> DB : 주문 확정
+        ACTIVATE DB
+
+    return 주문 내역
+
+return response : 주문 내역
+
+@enduml

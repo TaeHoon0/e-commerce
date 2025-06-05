@@ -1,0 +1,86 @@
+@startuml
+
+!define SHOW_NOTE ' 노트 표시 여부 ( 비활성화 시 주석 처리 ) '
+Title 로그인 \n\
+
+'---------------------------------------------------
+' 스킨 정의
+'---------------------------------------------------
+
+skinparam Shadowing true
+
+'skinparam arrow {
+'  FontName Consolas
+'  FontSize 10
+'}
+
+skinparam participant {
+  BackgroundColor BUSINESS
+  BorderColor DARKRED
+  BorderThickness 1
+}
+
+skinparam database {
+  BackgroundColor DATABASE
+  BorderColor DARKRED
+}
+
+skinparam actor {
+  BackgroundColor ACTOR
+  BorderColor DARKRED
+  BorderThickness 2
+}
+
+skinparam sequence {
+  ArrowColor DARKRED
+  LifeLineBorderColor DARKRED
+  BoxBackgroundColor WHITE
+  BoxFontColor RoyalBlue
+  LifeLineBackgroundColor #FFBBBB
+}
+
+skinparam note {
+  BackgroundColor GOLD
+  BorderThickness 1
+  FontSize 8
+}
+
+'=====================================
+'링크 되지 않응 항목 숨김
+'=====================================
+hide unlinked
+
+' 리턴 메시지 박스 위치 ( 아래 )
+skinparam responseMessageBelowArrow true
+' 자동 넘버링
+autonumber "<B>[00]"
+
+'---------------------------------------------------
+' 객체 정의
+'---------------------------------------------------
+!pragma teoz true
+
+box "<사용자>"
+  participant "USER"             as USER
+end box
+box "<서버>"
+    participant "AUTH"           as AUTH
+    database    "DB"                as DB
+end box
+
+'---------------------------------------------------
+' OwnerGW Sequence Diagram v.0.0.0.1
+'---------------------------------------------------
+
+USER -> AUTH : * Method\t : POST \n* API\t\t : /api/auth/login
+
+ACTIVATE AUTH
+
+  AUTH -> DB : 사용자 조회
+  ACTIVATE DB
+
+  return create 사용자 정보
+
+return response : JWT Token
+
+@enduml

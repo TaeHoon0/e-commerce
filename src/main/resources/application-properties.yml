@@ -1,0 +1,8 @@
+point-policy:
+  max-point: 1000000
+  min-point : 0
+
+jwt:
+  secret-key: hh99SERVERECOMMERCEhh99SERVERECOMMERCEhh99SERVERECOMMERCEhh99SERVERECOMMERCE
+  access-token-expiration-time: 1800000  # 30분
+  refresh-token-expiration-time: 10800000 # 3시간
