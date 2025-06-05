@@ -7,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum PointChangedType {
+public enum PointChangeType {
 
     CHARGE(true),
     USE(false),

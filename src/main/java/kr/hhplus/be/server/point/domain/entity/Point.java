@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,6 +29,10 @@ public class Point extends BaseTimeEntity {
     @Column(name = "tp_tu_key", nullable = false, unique = true)
     private Long userId;
 
+    @OneToMany(mappedBy = "point", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<PointHistory> histories = new ArrayList<>();
+
+
     public void charge(BigDecimal amount) {
         this.amount = this.amount.add(amount);
     }
@@ -35,7 +41,7 @@ public class Point extends BaseTimeEntity {
         this.amount = this.amount.subtract(amount);
     }
 
-    public static Point createNew(Long userId) {
+    public static Point create(Long userId) {
 
         return Point.builder()
                 .userId(userId)

@@ -1,10 +1,10 @@
 package kr.hhplus.be.server.point.application.port.in;
 
-import kr.hhplus.be.server.point.domain.PointChangedType;
-import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;
-import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
+import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
+import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.response.PointResult;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface PointPort {
@@ -12,20 +12,20 @@ public interface PointPort {
     /**
      * 포인트 충전
      */
-    PointResponse chargePoint(Long userId, BigDecimal amount, PointChangedType changedType);
+    PointResult chargePoint(ChargePointCommand command);
 
     /**
      * 포인트 사용
      */
-    PointResponse usePoint(Long key, BigDecimal amount, PointChangedType changedType);
+    PointResult usePoint(UsePointCommand command);
 
     /**
      * 포인트 조회
      */
-    PointResponse getPoint(Long userId);
+    PointResult getPoint(Long userId);
 
     /**
      * 포인트 이력 조회
      */
-    List<PointHistoryResponse> getPointHistories(Long userId);
+    List<PointHistoryResult> getPointHistories(Long userId);
 }

@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PointHistoryJpaRepository extends JpaRepository<PointHistory, Long> {
 
-    List<PointHistory> findAllByPoint_Id(long pointKey);
+    List<PointHistory> findAllByPoint_IdOrderByIdAsc(long pointKey);
 }

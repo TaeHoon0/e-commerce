@@ -5,7 +5,7 @@ import kr.hhplus.be.server.user.domain.entity.User;
 
 public class UserResultMapper {
 
-    public static UserResult toDto(User user) {
+    public static UserResult toResult(User user) {
 
         return new UserResult(
                 user.getId(),

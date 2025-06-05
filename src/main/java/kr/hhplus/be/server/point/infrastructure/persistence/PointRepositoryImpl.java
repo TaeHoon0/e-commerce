@@ -1,7 +1,8 @@
 package kr.hhplus.be.server.point.infrastructure.persistence;
 
 import kr.hhplus.be.server.point.domain.entity.Point;
-import kr.hhplus.be.server.point.domain.repository.PointRepository;
+import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
+import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import kr.hhplus.be.server.point.infrastructure.persistence.jpa.PointJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class PointRepositoryImpl implements PointRepository {
+public class PointRepositoryImpl implements PointCommandRepository, PointQueryRepository {
 
     private final PointJpaRepository jpaRepository;
 
