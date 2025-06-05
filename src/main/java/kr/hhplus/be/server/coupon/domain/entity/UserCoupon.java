@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.coupon.domain.entity;
 
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import kr.hhplus.be.server.coupon.domain.CouponStatus;
 
 import lombok.*;
@@ -19,19 +21,44 @@ public class UserCoupon extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tuc_key", nullable = false)
-    private Long key;
+    private Long id;
+
+    @Column(name = "tuc_name", length = 30, nullable = false)
+    private String name;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tuc_status", length = 10, nullable = false)
     private CouponStatus status;
 
+    @Column(name = "tuc_discount_amount", nullable = false)
+    private BigDecimal discountAmount;
+
+    @Column(name = "tuc_minimum_price")
+    private BigDecimal minimumPrice;
+
+    @Column(name = "tuc_expire_date")
+    private LocalDateTime expireDate;
+
     @Column(name = "tuc_to_key", nullable = true)
-    private Long orderKey;
+    private Long orderId;
 
     @Column(name = "tuc_tu_key", nullable = false)
-    private Long userKey;
+    private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tuc_tc_key", nullable = false)
-    private Coupon coupon;
+    private CouponTemplate couponTemplate;
+
+    public UserCoupon create(
+        String name, BigDecimal discountAmount, BigDecimal minimumPrice, LocalDateTime expireDate
+    ) {
+
+        return UserCoupon.builder()
+            .name(name)
+            .status(CouponStatus.AVAILABLE)
+            .discountAmount(discountAmount)
+            .minimumPrice(minimumPrice)
+            .expireDate(expireDate)
+            .build();
+    }
 }
