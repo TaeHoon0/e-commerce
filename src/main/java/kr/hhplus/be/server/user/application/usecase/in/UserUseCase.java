@@ -53,6 +53,7 @@ public class UserUseCase implements UserPort {
     }
 
     @Override
+    @Transactional
     public LoginUserResult login(LoginUserCommand command) {
 
         User user = userQueryRepository.findByEmail(command.email())

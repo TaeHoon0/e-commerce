@@ -42,15 +42,15 @@ public class UserCoupon extends BaseTimeEntity {
     @Column(name = "tuc_to_key", nullable = true)
     private Long orderId;
 
-    @Column(name = "tuc_tu_key", nullable = false)
+    @Column(name = "tuc_tu_key", nullable = true)
     private Long userId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "tuc_tc_key", nullable = false)
+    @JoinColumn(name = "tuc_tcp_key", nullable = false)
     private CouponTemplate couponTemplate;
 
-    public UserCoupon create(
-        String name, BigDecimal discountAmount, BigDecimal minimumPrice, LocalDateTime expireDate
+    public static UserCoupon create(
+        String name, BigDecimal discountAmount, BigDecimal minimumPrice, LocalDateTime expireDate, CouponTemplate couponTemplate
     ) {
 
         return UserCoupon.builder()
@@ -59,6 +59,7 @@ public class UserCoupon extends BaseTimeEntity {
             .discountAmount(discountAmount)
             .minimumPrice(minimumPrice)
             .expireDate(expireDate)
+            .couponTemplate(couponTemplate)
             .build();
     }
 }
