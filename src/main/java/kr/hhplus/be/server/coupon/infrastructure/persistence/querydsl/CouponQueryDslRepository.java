@@ -30,6 +30,15 @@ public class CouponQueryDslRepository {
         query.setHint("javax.persistence.lock.timeout", 3);
 
         return Optional.ofNullable(query.fetchFirst());
+    }
 
+    public Optional<UserCoupon> findByTemplateIdAndUserId(Long templateId, Long userId) {
+
+        return Optional.ofNullable(
+            queryFactory.selectFrom(userCoupon)
+                        .where(userCoupon.couponTemplate.id.eq(templateId)
+                          .and(userCoupon.userId.eq(userId)))
+                        .fetchFirst()
+        );
     }
 }

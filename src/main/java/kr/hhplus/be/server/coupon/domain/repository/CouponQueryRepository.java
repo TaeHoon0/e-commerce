@@ -6,4 +6,6 @@ import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 public interface CouponQueryRepository {
 
     Optional<UserCoupon> findByTemplateIdWithLock(Long templateId);
+
+    Optional<UserCoupon> findByTemplateIdAndUserId(Long templateId, Long userId);
 }

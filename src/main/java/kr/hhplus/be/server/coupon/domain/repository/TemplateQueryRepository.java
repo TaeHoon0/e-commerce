@@ -5,5 +5,5 @@ import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;
 
 public interface TemplateQueryRepository {
 
-    Optional<CouponTemplate> findByTemplateId(Long templateId);
+    Optional<CouponTemplate> findByTemplateId(long templateId);
 }

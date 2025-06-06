@@ -33,4 +33,10 @@ public class CouponRepositoryImpl implements CouponCommandRepository, CouponQuer
 
         return couponQueryDslRepository.findByTemplateIdWithLock(templateId);
     }
+
+    @Override
+    public Optional<UserCoupon> findByTemplateIdAndUserId(Long templateId, Long userId) {
+
+        return couponQueryDslRepository.findByTemplateIdAndUserId(templateId, userId);
+    }
 }

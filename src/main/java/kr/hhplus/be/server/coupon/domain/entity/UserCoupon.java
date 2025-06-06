@@ -3,6 +3,8 @@ package kr.hhplus.be.server.coupon.domain.entity;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
+
 import kr.hhplus.be.server.coupon.domain.CouponStatus;
 
 import lombok.*;
@@ -39,6 +41,9 @@ public class UserCoupon extends BaseTimeEntity {
     @Column(name = "tuc_expire_date")
     private LocalDateTime expireDate;
 
+    @Column(name = "tuc_issued_date")
+    private LocalDateTime issuedDate;
+
     @Column(name = "tuc_to_key", nullable = true)
     private Long orderId;
 
@@ -61,5 +66,26 @@ public class UserCoupon extends BaseTimeEntity {
             .expireDate(expireDate)
             .couponTemplate(couponTemplate)
             .build();
+    }
+
+    public boolean isUnassigned() {
+        return this.status.equals(CouponStatus.UNASSIGNED);
+    }
+
+    public boolean isAssigned() {
+        return !isUnassigned();
+    }
+
+    public boolean isExpired() {
+        return Optional.ofNullable(this.expireDate)
+                .map(exp -> LocalDateTime.now().isAfter(exp))
+                .orElse(false);
+    }
+
+    public void issueCoupon(long userId) {
+
+        this.userId = userId;
+        this.status = CouponStatus.AVAILABLE;
+        this.issuedDate = LocalDateTime.now();
     }
 }

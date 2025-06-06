@@ -18,6 +18,7 @@ public enum CouponErrorCode {
     COUPON_ALREADY_USED(HttpStatus.BAD_REQUEST, "4002003", "이미 사용된 쿠폰입니다."),
     COUPON_EXPIRED(HttpStatus.BAD_REQUEST, "4002004", "만료된 쿠폰입니다."),
     COUPON_ASSIGN_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "5002005", "쿠폰 할당에 실패했습니다."),
+    COUPON_OUT_OF_STOCK(HttpStatus.BAD_REQUEST, "4002013", "모두 할당되어 더 이상 쿠폰을 발급할 수 없습니다."),
 
     // 락 관련
     LOCK_ACQUISITION_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "5002006", "쿠폰 락 획득에 실패했습니다."),
