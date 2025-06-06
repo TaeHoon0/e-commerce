@@ -4,10 +4,7 @@ import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
-import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
-import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import kr.hhplus.be.server.point.domain.service.PointService;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,11 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,98 +23,92 @@ public class PointServiceTest {
     @Mock
     private PointPolicy pointPolicy;
 
-    @Mock
-    private PointQueryRepository pointQueryRepository;
-
-    @Mock
-    private PointCommandRepository pointCommandRepository;
-
     @InjectMocks
     private PointService pointService;
 
     @Test
-    void 신규_가입자_포인트_충전_성공() {
+    void 신규_포인트_충전_성공() {
 
-        //given
+        // Given
         Long userId = 1L;
-        BigDecimal amount = BigDecimal.valueOf(1000);
-
-        when(pointQueryRepository.findByUserIdWithLock(userId)).thenReturn(Optional.empty());
-
+        BigDecimal chargeAmount = BigDecimal.valueOf(1_000);
         Point newPoint = Point.create(userId);
-        when(pointCommandRepository.save(any(Point.class))).thenReturn(newPoint);
 
-        doNothing().when(pointPolicy).validateMaxPoint(BigDecimal.ZERO, amount);
+        doNothing().when(pointPolicy).validateMaxPoint(BigDecimal.ZERO, chargeAmount);
 
-        //when
-        Point result = pointService.charge(userId, amount);
+        // When
+        pointService.charge(newPoint, chargeAmount);
 
-        //then
-        verify(pointCommandRepository, times(1)).save(any(Point.class));
-        assertEquals(amount, result.getAmount());
+        // Then
+        verify(pointPolicy, times(1)).validateMaxPoint(BigDecimal.ZERO, chargeAmount);
+        assertEquals(chargeAmount, newPoint.getAmount());
     }
 
     @Test
-    void 포인트_갖고있는_사용자_포인트_충전_성공() {
-
-        //given
+    void 포인트_충전_실패_보유량_초과() {
+        // Given
         Long userId = 2L;
-        BigDecimal existingAmount = BigDecimal.valueOf(5000);
-        BigDecimal chargeAmount = BigDecimal.valueOf(2500);
+        BigDecimal existingAmount = BigDecimal.valueOf(5_000);
+        BigDecimal chargeAmount = BigDecimal.valueOf(10_000_000);
 
         Point existingPoint = Point.create(userId);
         existingPoint.charge(existingAmount);
 
-        when(pointQueryRepository.findByUserIdWithLock(userId)).thenReturn(Optional.of(existingPoint));
-        doNothing().when(pointPolicy).validateMaxPoint(existingAmount, chargeAmount);
+        doThrow(new PointException(PointErrorCode.EXCEEDS_MAX_POINT))
+            .when(pointPolicy).validateMaxPoint(existingAmount, chargeAmount);
 
-        //when
-        Point result = pointService.charge(userId, chargeAmount);
+        // When & Then
+        PointException ex = assertThrows(PointException.class, () ->
+            pointService.charge(existingPoint, chargeAmount)
+        );
 
-        //then
-        verify(pointCommandRepository, never()).save(any());
-        assertEquals(existingAmount.add(chargeAmount), result.getAmount());
-    }
+        // 예외 코드가 ABOVE_MAX_POINT인지 검증
+        assertEquals(PointErrorCode.EXCEEDS_MAX_POINT, ex.getPointErrorCode());
 
-    @Test
-    void 포인트_사용_잔액_부족() {
-
-        //given
-        Long userId = 3L;
-        BigDecimal existingAmount = BigDecimal.valueOf(1000);
-        BigDecimal useAmount = BigDecimal.valueOf(2000);
-
-        Point existingPoint = Point.create(userId);
-        existingPoint.charge(existingAmount);
-
-        when(pointQueryRepository.findByUserIdWithLock(userId)).thenReturn(Optional.of(existingPoint));
-
-        doThrow(new PointException(PointErrorCode.BELOW_MIN_POINT))
-                .when(pointPolicy).validateMinPoint(existingAmount, useAmount);
-
-        //when, then
-        PointException ex = assertThrows(PointException.class, () -> pointService.use(userId, useAmount));
-        assertEquals(PointErrorCode.BELOW_MIN_POINT, ex.getPointErrorCode());
+        // Point의 amount가 변화하지 않았는지(= 5000) 검증
+        assertEquals(existingAmount, existingPoint.getAmount());
     }
 
     @Test
     void 포인트_사용_성공() {
-
-        //given
-        Long userId = 4L;
-        BigDecimal existingAmount = BigDecimal.valueOf(100);
-        BigDecimal useAmount = BigDecimal.valueOf(40);
+        // Given
+        Long userId = 3L;
+        BigDecimal existingAmount = BigDecimal.valueOf(2_000);
+        BigDecimal useAmount = BigDecimal.valueOf(500);
 
         Point existingPoint = Point.create(userId);
         existingPoint.charge(existingAmount);
 
-        when(pointQueryRepository.findByUserIdWithLock(userId)).thenReturn(Optional.of(existingPoint));
         doNothing().when(pointPolicy).validateMinPoint(existingAmount, useAmount);
 
-        //when
-        Point result = pointService.use(userId, useAmount);
+        // When
+        pointService.use(existingPoint, useAmount);
 
-        //then
-        assertEquals(existingAmount.subtract(useAmount), result.getAmount());
+        // Then
+        verify(pointPolicy, times(1)).validateMinPoint(existingAmount, useAmount);
+        assertEquals(existingAmount.subtract(useAmount), existingPoint.getAmount());
+    }
+
+    @Test
+    void 포인트_사용_실패_잔고_부족() {
+
+        // Given
+        Long userId = 4L;
+        BigDecimal existingAmount = BigDecimal.valueOf(300);
+        BigDecimal useAmount = BigDecimal.valueOf(1_000);
+
+        Point existingPoint = Point.create(userId);
+        existingPoint.charge(existingAmount);
+
+        doThrow(new PointException(PointErrorCode.BELOW_MIN_POINT))
+            .when(pointPolicy).validateMinPoint(existingAmount, useAmount);
+
+        // When & Then
+        PointException ex = assertThrows(PointException.class, () ->
+            pointService.use(existingPoint, useAmount)
+        );
+
+        assertEquals(PointErrorCode.BELOW_MIN_POINT, ex.getPointErrorCode());
+        assertEquals(existingAmount, existingPoint.getAmount());
     }
 }

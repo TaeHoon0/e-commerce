@@ -12,22 +12,24 @@ import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
+import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointHistoryCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import kr.hhplus.be.server.point.domain.service.PointService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.PessimisticLockException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Component
+@Service
 @RequiredArgsConstructor
 public class PointUseCase implements PointPort {
 
     private final PointService pointService;
     private final PointQueryRepository pointQueryRepository;
+    private final PointCommandRepository pointCommandRepository;
     private final PointHistoryCommandRepository pointHistoryCommandRepository;
 
     @Override
@@ -40,8 +42,11 @@ public class PointUseCase implements PointPort {
         Point point;
 
         try {
+            point = pointQueryRepository.findByUserIdWithLock(command.userId())
+                .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
+
             // 포인트 충전
-            point = pointService.charge(command.userId(), command.amount());
+            pointService.charge(point, command.amount());
 
             // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
@@ -64,8 +69,11 @@ public class PointUseCase implements PointPort {
         Point point;
 
         try {
+            point = pointQueryRepository.findByUserIdWithLock(command.userId())
+                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
+
             // 포인트 사용
-            point = pointService.use(command.userId(), command.amount());
+            pointService.use(point, command.amount());
 
             // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
