@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class TemplateUseCase implements TemplatePort {
 
     private final TemplateCommandRepository templateCommandRepository;
+    private final
 
     @Override
     @Transactional
@@ -29,5 +30,6 @@ public class TemplateUseCase implements TemplatePort {
         template = templateCommandRepository.save(template);
 
         //TODO 쿠폰 totalCount 개수만큼 생성하기
+
     }
 }
