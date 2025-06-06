@@ -57,4 +57,27 @@ public class UserCouponHistory extends BaseTimeEntity{
     @ManyToOne
     @JoinColumn(name = "tuch_tuc_key")
     private UserCoupon userCoupon;
+
+    public static UserCouponHistory createIssueHistory(long userId, UserCoupon userCoupon) {
+
+        return UserCouponHistory.builder()
+            .userId(userId)
+            .changeType(CouponChangeType.ISSUE)
+            .beforeStatus(CouponStatus.UNASSIGNED)
+            .afterStatus(CouponStatus.AVAILABLE)
+            .userCoupon(userCoupon)
+            .build();
+    }
+
+    public static UserCouponHistory createUseHistory(long userId, long orderId, UserCoupon userCoupon) {
+
+        return UserCouponHistory.builder()
+                .userId(userId)
+                .orderId(orderId)
+                .changeType(CouponChangeType.USE)
+                .beforeStatus(CouponStatus.AVAILABLE)
+                .afterStatus(CouponStatus.USED)
+                .userCoupon(userCoupon)
+                .build();
+    }
 }

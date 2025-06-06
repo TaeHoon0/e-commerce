@@ -41,4 +41,16 @@ public class CouponQueryDslRepository {
                         .fetchFirst()
         );
     }
+
+    public Optional<UserCoupon> findByCouponIdWithLock(Long couponId) {
+
+        JPAQuery<UserCoupon> query =  queryFactory.selectFrom(userCoupon)
+                .where(userCoupon.id.eq(couponId)
+                  .and(userCoupon.status.eq(CouponStatus.AVAILABLE)));
+
+        query.setLockMode(LockModeType.PESSIMISTIC_WRITE);
+        query.setHint("javax.persistence.lock.timeout", 3);
+
+        return Optional.ofNullable(query.fetchFirst());
+    }
 }

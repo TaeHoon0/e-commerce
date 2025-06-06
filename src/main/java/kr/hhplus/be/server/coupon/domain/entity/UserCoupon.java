@@ -82,10 +82,30 @@ public class UserCoupon extends BaseTimeEntity {
                 .orElse(false);
     }
 
+    public boolean isAvailable() {
+        return this.status.equals(CouponStatus.AVAILABLE);
+    }
+
+    public boolean isNotAvailable() {
+        return !isAvailable();
+    }
+
+    public boolean isBelowMinimumPrice(BigDecimal totalPrice) {
+        return Optional.ofNullable(this.minimumPrice)
+                .map(minimumPrice -> totalPrice.compareTo(minimumPrice) < 0)
+                .orElse(false);
+    }
+
     public void issueCoupon(long userId) {
 
         this.userId = userId;
         this.status = CouponStatus.AVAILABLE;
         this.issuedDate = LocalDateTime.now();
+    }
+
+    public void useCoupon(long orderId) {
+
+        this.orderId = orderId;
+        this.status = CouponStatus.USED;
     }
 }
