@@ -7,10 +7,8 @@ import lombok.Getter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.math.BigDecimal;
-import org.springframework.stereotype.Component;
 
 @Getter
-@Component
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "point-policy")
 public class PointPolicy {

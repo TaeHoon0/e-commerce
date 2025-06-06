@@ -27,7 +27,7 @@ public class UserCoupon extends BaseTimeEntity {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tuc_status", length = 10, nullable = false)
+    @Column(name = "tuc_status", length = 15, nullable = false)
     private CouponStatus status;
 
     @Column(name = "tuc_discount_amount", nullable = false)
@@ -55,7 +55,7 @@ public class UserCoupon extends BaseTimeEntity {
 
         return UserCoupon.builder()
             .name(name)
-            .status(CouponStatus.AVAILABLE)
+            .status(CouponStatus.UNASSIGNED)
             .discountAmount(discountAmount)
             .minimumPrice(minimumPrice)
             .expireDate(expireDate)

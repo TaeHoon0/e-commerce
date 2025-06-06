@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
 import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.mapper.TemplateResultMapper;
 import kr.hhplus.be.server.coupon.application.port.in.TemplatePort;
 import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
@@ -19,7 +21,7 @@ public class TemplateUseCase implements TemplatePort {
 
     @Override
     @Transactional
-    public void createTemplate(CreateTemplateCommand command) {
+    public TemplateResult createTemplate(CreateTemplateCommand command) {
 
         CouponTemplate template = CouponTemplate.create(
             command.templateName(),
@@ -39,7 +41,8 @@ public class TemplateUseCase implements TemplatePort {
             template
         );
 
-        //TODO 쿠폰 totalCount 개수만큼 생성하기
         couponCommandRepository.bulkInsert(userCoupon , command.totalCount());
+
+        return TemplateResultMapper.toResult(template);
     }
 }
