@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.point;
 
+import kr.hhplus.be.server.point.domain.PointChangeType;
 import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
@@ -33,11 +34,12 @@ public class PointServiceTest {
         Long userId = 1L;
         BigDecimal chargeAmount = BigDecimal.valueOf(1_000);
         Point newPoint = Point.create(userId);
+        PointChangeType type = PointChangeType.CHARGE;
 
         doNothing().when(pointPolicy).validateMaxPoint(BigDecimal.ZERO, chargeAmount);
 
         // When
-        pointService.charge(newPoint, chargeAmount);
+        pointService.charge(newPoint, chargeAmount, type);
 
         // Then
         verify(pointPolicy, times(1)).validateMaxPoint(BigDecimal.ZERO, chargeAmount);
@@ -50,6 +52,7 @@ public class PointServiceTest {
         Long userId = 2L;
         BigDecimal existingAmount = BigDecimal.valueOf(5_000);
         BigDecimal chargeAmount = BigDecimal.valueOf(10_000_000);
+        PointChangeType type = PointChangeType.CHARGE;
 
         Point existingPoint = Point.create(userId);
         existingPoint.charge(existingAmount);
@@ -59,7 +62,7 @@ public class PointServiceTest {
 
         // When & Then
         PointException ex = assertThrows(PointException.class, () ->
-            pointService.charge(existingPoint, chargeAmount)
+            pointService.charge(existingPoint, chargeAmount, type)
         );
 
         // 예외 코드가 ABOVE_MAX_POINT인지 검증
@@ -75,6 +78,7 @@ public class PointServiceTest {
         Long userId = 3L;
         BigDecimal existingAmount = BigDecimal.valueOf(2_000);
         BigDecimal useAmount = BigDecimal.valueOf(500);
+        PointChangeType type = PointChangeType.USE;
 
         Point existingPoint = Point.create(userId);
         existingPoint.charge(existingAmount);
@@ -82,7 +86,7 @@ public class PointServiceTest {
         doNothing().when(pointPolicy).validateMinPoint(existingAmount, useAmount);
 
         // When
-        pointService.use(existingPoint, useAmount);
+        pointService.use(existingPoint, useAmount, type);
 
         // Then
         verify(pointPolicy, times(1)).validateMinPoint(existingAmount, useAmount);
@@ -96,6 +100,7 @@ public class PointServiceTest {
         Long userId = 4L;
         BigDecimal existingAmount = BigDecimal.valueOf(300);
         BigDecimal useAmount = BigDecimal.valueOf(1_000);
+        PointChangeType type = PointChangeType.USE;
 
         Point existingPoint = Point.create(userId);
         existingPoint.charge(existingAmount);
@@ -105,7 +110,7 @@ public class PointServiceTest {
 
         // When & Then
         PointException ex = assertThrows(PointException.class, () ->
-            pointService.use(existingPoint, useAmount)
+            pointService.use(existingPoint, useAmount, type)
         );
 
         assertEquals(PointErrorCode.BELOW_MIN_POINT, ex.getPointErrorCode());

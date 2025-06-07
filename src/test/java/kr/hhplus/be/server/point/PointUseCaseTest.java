@@ -82,7 +82,7 @@ class PointUseCaseTest {
             .thenReturn(Optional.of(existing));
 
         doThrow(new PessimisticLockException("lock-failed", null, null))
-            .when(pointService).charge(existing, amount);
+            .when(pointService).charge(existing, amount, command.type());
 
         // When & Then
         PointException ex = assertThrows(PointException.class, () ->
@@ -149,7 +149,7 @@ class PointUseCaseTest {
             .thenReturn(Optional.of(existing));
 
         doThrow(new LockTimeoutException("timeout", null, null))
-            .when(pointService).use(existing, amount);
+            .when(pointService).use(existing, amount, command.type());
 
         // When & Then
         PointException ex = assertThrows(PointException.class, () ->

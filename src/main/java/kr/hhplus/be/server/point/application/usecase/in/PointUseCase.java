@@ -36,9 +36,6 @@ public class PointUseCase implements PointPort {
     @Transactional
     public PointResult chargePoint(ChargePointCommand command) {
 
-        // 포인트 타입 검증
-        command.type().validateForCharge();
-
         Point point;
 
         try {
@@ -46,7 +43,7 @@ public class PointUseCase implements PointPort {
                 .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
 
             // 포인트 충전
-            pointService.charge(point, command.amount());
+            pointService.charge(point, command.amount(), command.type());
 
             // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
@@ -63,9 +60,6 @@ public class PointUseCase implements PointPort {
     @Transactional
     public PointResult usePoint(UsePointCommand command) {
 
-        // 포인트 타입 검증
-        command.type().validateForUse();
-
         Point point;
 
         try {
@@ -73,7 +67,7 @@ public class PointUseCase implements PointPort {
                 .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
 
             // 포인트 사용
-            pointService.use(point, command.amount());
+            pointService.use(point, command.amount(), command.type());
 
             // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
