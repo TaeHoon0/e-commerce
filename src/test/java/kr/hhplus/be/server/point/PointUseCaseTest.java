@@ -1,15 +1,14 @@
 package kr.hhplus.be.server.point;
 
-import java.util.Optional;
 import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
 import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
 import kr.hhplus.be.server.point.application.usecase.in.PointUseCase;
 import kr.hhplus.be.server.point.domain.PointChangeType;
 import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
-import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointHistoryCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import kr.hhplus.be.server.point.domain.service.PointService;
@@ -22,6 +21,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -31,35 +32,30 @@ class PointUseCaseTest {
 
     @Mock private PointService pointService;
     @Mock private PointQueryRepository pointQueryRepository;
-    @Mock private PointCommandRepository pointCommandRepository;
     @Mock private PointHistoryCommandRepository pointHistoryCommandRepository;
     @InjectMocks private PointUseCase pointUseCase;
 
     @Test
-    void 포인트_충전_성공() {
-
-        // Given
+    void 포인트_충전_성공_및_이력_저장() {
+        // given
         Long userId = 1L;
-        BigDecimal amount = BigDecimal.valueOf(7_500);
-
-        Point dummyPoint = Point.create(userId);
-        dummyPoint.charge(amount);
-
+        BigDecimal amount = BigDecimal.valueOf(1000);
         ChargePointCommand command = mock(ChargePointCommand.class);
         when(command.userId()).thenReturn(userId);
         when(command.amount()).thenReturn(amount);
         when(command.type()).thenReturn(PointChangeType.CHARGE);
 
-        when(pointQueryRepository.findByUserIdWithLock(userId))
-            .thenReturn(Optional.of(dummyPoint));
+        Point dummyPoint = Point.create(userId);
+        dummyPoint.charge(amount);
+        when(pointService.charge(userId, amount, PointChangeType.CHARGE))
+                .thenReturn(dummyPoint);
 
-        // When
+        // when
         var result = pointUseCase.chargePoint(command);
 
-        // Then
-        verify(pointHistoryCommandRepository, times(1))
-            .save(any(PointHistory.class));
-
+        // then
+        verify(pointService).charge(userId, amount, PointChangeType.CHARGE);
+        verify(pointHistoryCommandRepository).save(any(PointHistory.class));
         assertNotNull(result);
         assertEquals(userId, result.userId());
         assertEquals(amount, result.amount());
@@ -67,96 +63,134 @@ class PointUseCaseTest {
 
     @Test
     void 포인트_충전_락_획득_실패() {
-
-        // Given
-        Long userId = 11L;
-        BigDecimal amount = BigDecimal.valueOf(30);
-
+        // given
+        Long userId = 2L;
+        BigDecimal amount = BigDecimal.valueOf(500);
         ChargePointCommand command = mock(ChargePointCommand.class);
         when(command.userId()).thenReturn(userId);
         when(command.amount()).thenReturn(amount);
         when(command.type()).thenReturn(PointChangeType.CHARGE);
 
-        Point existing = Point.create(userId);
-        when(pointQueryRepository.findByUserIdWithLock(userId))
-            .thenReturn(Optional.of(existing));
+        when(pointService.charge(userId, amount, PointChangeType.CHARGE))
+                .thenThrow(new PessimisticLockException(null, null, null));
 
-        doThrow(new PessimisticLockException("lock-failed", null, null))
-            .when(pointService).charge(existing, amount, command.type());
-
-        // When & Then
-        PointException ex = assertThrows(PointException.class, () ->
-            pointUseCase.chargePoint(command)
-        );
-
+        // when & then
+        PointException ex = assertThrows(PointException.class,
+                () -> pointUseCase.chargePoint(command));
         assertEquals(PointErrorCode.LOCK_ACQUISITION_FAILED, ex.getPointErrorCode());
-
         verify(pointHistoryCommandRepository, never()).save(any());
     }
 
     @Test
-    void 포인트_사용_성공() {
-
-        // Given
-        Long userId = 111L;
-        BigDecimal initialAmount = BigDecimal.valueOf(100);
-        BigDecimal useAmount = BigDecimal.valueOf(20);
-
-        Point dummyPoint = Point.create(userId);
-        dummyPoint.charge(initialAmount);
-
-        dummyPoint.use(useAmount);
+    void 포인트_사용_성공_및_이력_저장() {
+        // given
+        Long userId = 3L;
+        BigDecimal initial = BigDecimal.valueOf(500);
+        BigDecimal useAmt  = BigDecimal.valueOf(200);
 
         UsePointCommand command = mock(UsePointCommand.class);
         when(command.userId()).thenReturn(userId);
-        when(command.amount()).thenReturn(useAmount);
+        when(command.amount()).thenReturn(useAmt);
         when(command.type()).thenReturn(PointChangeType.USE);
 
+        Point dummyPoint = Point.create(userId);
+        dummyPoint.charge(initial);
+        dummyPoint.use(useAmt);
+        when(pointService.use(userId, useAmt, PointChangeType.USE))
+                .thenReturn(dummyPoint);
 
-        when(pointQueryRepository.findByUserIdWithLock(userId))
-            .thenReturn(Optional.of(dummyPoint));
-
-        // When
+        // when
         var result = pointUseCase.usePoint(command);
 
-        // Then
-        // 1) 히스토리 저장이 한 번 호출된다
-        verify(pointHistoryCommandRepository, times(1))
-            .save(any(PointHistory.class));
-
-        // 2) 결과 객체 검증: 원래 100에서 20을 사용했으니 80이 남아야 한다
+        // then
+        verify(pointService).use(userId, useAmt, PointChangeType.USE);
+        verify(pointHistoryCommandRepository).save(any(PointHistory.class));
         assertNotNull(result);
         assertEquals(userId, result.userId());
-        assertEquals(BigDecimal.valueOf(80), result.amount());
+        assertEquals(initial.subtract(useAmt), result.amount());
     }
 
     @Test
-    void 포인트_사용_락_획득_타임아웃() {
-
-        // Given
-        Long userId = 13L;
-        BigDecimal amount = BigDecimal.valueOf(10);
-
+    void 포인트_사용_락_획득_실패() {
+        // given
+        Long userId = 4L;
+        BigDecimal amount = BigDecimal.valueOf(100);
         UsePointCommand command = mock(UsePointCommand.class);
         when(command.userId()).thenReturn(userId);
         when(command.amount()).thenReturn(amount);
         when(command.type()).thenReturn(PointChangeType.USE);
 
-        Point existing = Point.create(userId);
-        existing.charge(BigDecimal.valueOf(50));
+        when(pointService.use(userId, amount, PointChangeType.USE))
+                .thenThrow(new LockTimeoutException(null, null, null));
 
-        when(pointQueryRepository.findByUserIdWithLock(userId))
-            .thenReturn(Optional.of(existing));
-
-        doThrow(new LockTimeoutException("timeout", null, null))
-            .when(pointService).use(existing, amount, command.type());
-
-        // When & Then
-        PointException ex = assertThrows(PointException.class, () ->
-            pointUseCase.usePoint(command)
-        );
+        // when & then
+        PointException ex = assertThrows(PointException.class,
+                () -> pointUseCase.usePoint(command));
         assertEquals(PointErrorCode.LOCK_ACQUISITION_FAILED, ex.getPointErrorCode());
-
         verify(pointHistoryCommandRepository, never()).save(any());
+    }
+
+    @Test
+    void 포인트_조회_성공() {
+        // given
+        Long userId = 5L;
+        Point point = Point.create(userId);
+        point.charge(BigDecimal.valueOf(150));
+        when(pointQueryRepository.findByUserId(userId))
+                .thenReturn(Optional.of(point));
+
+        // when
+        var result = pointUseCase.getPoint(userId);
+
+        // then
+        assertNotNull(result);
+        assertEquals(userId, result.userId());
+        assertEquals(point.getAmount(), result.amount());
+    }
+
+    @Test
+    void 포인트_조회_실패() {
+        // given
+        Long userId = 6L;
+        when(pointQueryRepository.findByUserId(userId))
+                .thenReturn(Optional.empty());
+
+        // when & then
+        PointException ex = assertThrows(PointException.class,
+                () -> pointUseCase.getPoint(userId));
+        assertEquals(PointErrorCode.POINT_NOT_FOUND, ex.getPointErrorCode());
+    }
+
+    @Test
+    void 포인트_이력_조회_성공() {
+        // given
+        Long userId = 7L;
+        Point point = Point.create(userId);
+        point.charge(BigDecimal.valueOf(100));
+        PointHistory hist = PointHistory.create(point, BigDecimal.valueOf(50), PointChangeType.CHARGE);
+        point.getHistories().add(hist);
+        when(pointQueryRepository.findByUserId(userId))
+                .thenReturn(Optional.of(point));
+
+        // when
+        List<PointHistoryResult> results = pointUseCase.getPointHistories(userId);
+
+        // then
+        assertNotNull(results);
+        assertEquals(1, results.size());
+        assertEquals(hist.getChangedAmount(), results.get(0).changedAmount());
+    }
+
+    @Test
+    void 포인트_이력_조회_실패() {
+        // given
+        Long userId = 8L;
+        when(pointQueryRepository.findByUserId(userId))
+                .thenReturn(Optional.empty());
+
+        // when & then
+        PointException ex = assertThrows(PointException.class,
+                () -> pointUseCase.getPointHistories(userId));
+        assertEquals(PointErrorCode.POINT_NOT_FOUND, ex.getPointErrorCode());
     }
 }

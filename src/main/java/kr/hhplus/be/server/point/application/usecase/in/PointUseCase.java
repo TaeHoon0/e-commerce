@@ -29,29 +29,15 @@ public class PointUseCase implements PointPort {
 
     private final PointService pointService;
     private final PointQueryRepository pointQueryRepository;
-    private final PointCommandRepository pointCommandRepository;
     private final PointHistoryCommandRepository pointHistoryCommandRepository;
 
     @Override
     @Transactional
     public PointResult chargePoint(ChargePointCommand command) {
 
-        Point point;
+            Point point = pointService.charge(command.userId(), command.amount(), command.type());
 
-        try {
-            point = pointQueryRepository.findByUserIdWithLock(command.userId())
-                .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
-
-            // 포인트 충전
-            pointService.charge(point, command.amount(), command.type());
-
-            // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
-
-        } catch (PessimisticLockException | LockTimeoutException e) {
-
-            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
-        }
 
         return PointResultMapper.toResult(point);
     }
@@ -60,22 +46,9 @@ public class PointUseCase implements PointPort {
     @Transactional
     public PointResult usePoint(UsePointCommand command) {
 
-        Point point;
+            Point point = pointService.use(command.userId(), command.amount(), command.type());
 
-        try {
-            point = pointQueryRepository.findByUserIdWithLock(command.userId())
-                .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
-
-            // 포인트 사용
-            pointService.use(point, command.amount(), command.type());
-
-            // 이력 저장
             pointHistoryCommandRepository.save(PointHistory.create(point, command.amount(), command.type()));
-
-        } catch (PessimisticLockException | LockTimeoutException e) {
-
-            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
-        }
 
         return PointResultMapper.toResult(point);
     }
