@@ -70,7 +70,7 @@ public class PointUseCase implements PointPort {
 
         try {
             point = pointQueryRepository.findByUserIdWithLock(command.userId())
-                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
+                .orElseGet(() -> pointCommandRepository.save(Point.create(command.userId())));
 
             // 포인트 사용
             pointService.use(point, command.amount());
