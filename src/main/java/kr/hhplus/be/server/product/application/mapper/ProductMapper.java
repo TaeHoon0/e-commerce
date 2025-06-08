@@ -21,7 +21,7 @@ public class ProductMapper {
     public static ProductOptionResponse toDto(ProductOption entity) {
 
         return new ProductOptionResponse(
-                entity.getKey(),
+                entity.getId(),
                 entity.getOptionName(),
                 entity.getQuantity(),
                 entity.getPrice()

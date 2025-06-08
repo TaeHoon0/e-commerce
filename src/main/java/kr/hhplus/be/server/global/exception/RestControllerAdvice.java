@@ -46,20 +46,11 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
                 .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
     }
 
-    @ExceptionHandler({ IllegalArgumentException.class, MethodArgumentNotValidException.class })
-    public ResponseEntity<ApiResult<Void>> handleBadRequest(Exception e) {
-
-        StatusCode sc = StatusCode.BAD_REQUEST;
-
-        return ResponseEntity
-                .status(sc.getHttpStatus())
-                .body(ApiResult.error(sc.getCode(), sc.getMessage()));
-    }
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResult<Void>> handleGenericException(Exception e) {
 
         StatusCode sc = StatusCode.INTERNAL_SERVER_ERROR;
+        e.printStackTrace();
 
         return ResponseEntity
                 .status(sc.getHttpStatus())

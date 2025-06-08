@@ -31,10 +31,12 @@ public class ProductService {
         Product product = productQueryRepository.findByProductId(productId)
             .orElseThrow(() -> new ProductException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
+        System.out.println(product.getName());
+
         productPolicy.validateOptionCount(product, options);
 
         product.addOptions(options);
 
-        return product;
+        return productCommandRepository.save(product);
     }
 }

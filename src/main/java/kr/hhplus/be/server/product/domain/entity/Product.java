@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.hhplus.be.server.product.domain.ProductStatus;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,8 +34,9 @@ public class Product extends BaseTimeEntity {
     @Column(name = "tp_status", length = 10, nullable = false)
     private ProductStatus status;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProductOption> options;
+    private List<ProductOption> options = new ArrayList<>();
 
     public static Product create(String name, String description) {
 
