@@ -1,26 +1,17 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
-import jakarta.persistence.LockTimeoutException;
 import kr.hhplus.be.server.coupon.application.dto.request.IssueCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.request.UseCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.response.CouponResult;
 import kr.hhplus.be.server.coupon.application.mapper.CouponResultMapper;
 import kr.hhplus.be.server.coupon.application.port.in.CouponPort;
-import kr.hhplus.be.server.coupon.domain.CouponChangeType;
-import kr.hhplus.be.server.coupon.domain.CouponStatus;
 import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.entity.UserCouponHistory;
-import kr.hhplus.be.server.coupon.domain.exception.CouponErrorCode;
-import kr.hhplus.be.server.coupon.domain.exception.CouponException;
 import kr.hhplus.be.server.coupon.domain.repository.CouponHistoryCommandRepository;
-import kr.hhplus.be.server.coupon.domain.repository.CouponQueryRepository;
-import kr.hhplus.be.server.coupon.domain.repository.TemplateCommandRepository;
-import kr.hhplus.be.server.coupon.domain.repository.TemplateQueryRepository;
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
 import kr.hhplus.be.server.coupon.domain.service.TemplateService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.PessimisticLockException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +21,6 @@ public class CouponUseCase implements CouponPort {
 
     private final CouponService couponService;
     private final TemplateService templateService;
-    private final CouponQueryRepository couponQueryRepository;
     private final CouponHistoryCommandRepository couponHistoryCommandRepository;
 
     /**
