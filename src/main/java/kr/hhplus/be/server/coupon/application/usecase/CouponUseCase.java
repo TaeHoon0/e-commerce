@@ -18,6 +18,7 @@ import kr.hhplus.be.server.coupon.domain.repository.CouponQueryRepository;
 import kr.hhplus.be.server.coupon.domain.repository.TemplateCommandRepository;
 import kr.hhplus.be.server.coupon.domain.repository.TemplateQueryRepository;
 import kr.hhplus.be.server.coupon.domain.service.CouponService;
+import kr.hhplus.be.server.coupon.domain.service.TemplateService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.PessimisticLockException;
 import org.springframework.stereotype.Service;
@@ -28,43 +29,26 @@ import org.springframework.transaction.annotation.Transactional;
 public class CouponUseCase implements CouponPort {
 
     private final CouponService couponService;
+    private final TemplateService templateService;
     private final CouponQueryRepository couponQueryRepository;
-    private final TemplateCommandRepository templateCommandRepository;
-    private final TemplateQueryRepository templateQueryRepository;
     private final CouponHistoryCommandRepository couponHistoryCommandRepository;
 
+    /**
+     * <h3>쿠폰 발급</h3> <br>
+     * 1. 템플릿 쿠폰 남은 수량 감소 <br>
+     * 2. 미리 생성된 쿠폰을 조회하여 할당되지 않은 쿠폰 할당 및 사용 가능 상태로 변경
+     */
     @Override
     @Transactional
     public CouponResult issueCoupon(IssueCouponCommand command) {
 
-        UserCoupon coupon;
+        CouponTemplate template = templateService.get(command.templateId());
 
-        try {
+        templateService.decreaseRemainCount(template);
 
-            CouponTemplate template = templateQueryRepository.findByTemplateId(command.templateId())
-                    .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_TEMPLATE_NOT_FOUND));
+        UserCoupon coupon = couponService.issueCoupon(command.userId(), template.getId());
 
-            if (couponQueryRepository.findByTemplateIdAndUserId(command.templateId(), command.userId()).isPresent())
-                throw new CouponException(CouponErrorCode.DUPLICATE_COUPON_ISSUE);
-
-            // 미리 생성된 쿠폰 조회 rowLock 및 skip Locked를 사용
-            coupon = couponQueryRepository.findByTemplateIdWithLock(template.getId())
-                .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
-
-            // 원자적 감소를 사용하여 template 남은 수량과 발급 수량 정합성 유지
-            long affected = templateCommandRepository.decreaseRemainCount(template.getId());
-
-            if (affected == 0)
-                throw new CouponException(CouponErrorCode.COUPON_OUT_OF_STOCK);
-
-            // 쿠폰 발급
-            couponService.issueCoupon(command.userId(), coupon);
-            couponHistoryCommandRepository.save(UserCouponHistory.createIssueHistory(coupon.getUserId(), coupon));
-
-        } catch (PessimisticLockException | LockTimeoutException e) {
-
-            throw new CouponException(CouponErrorCode.LOCK_ACQUISITION_FAILED);
-        }
+        couponHistoryCommandRepository.save(UserCouponHistory.createIssueHistory(coupon.getUserId(), coupon));
 
         return CouponResultMapper.toResult(coupon);
     }
@@ -73,23 +57,10 @@ public class CouponUseCase implements CouponPort {
     @Transactional
     public CouponResult useCoupon(UseCouponCommand command) {
 
-        UserCoupon coupon;
+        UserCoupon coupon = couponService.useCoupon(command.couponId(), command.orderId(), command.totalPrice());
 
-        try {
-
-            coupon = couponQueryRepository.findByCouponIdWithLock(command.couponId())
-                    .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
-
-            couponService.useCoupon(command.orderId(), command.totalPrice(), coupon);
-            couponHistoryCommandRepository.save(UserCouponHistory.createUseHistory(coupon.getUserId(), coupon.getOrderId(), coupon));
-
-        } catch (PessimisticLockException | LockTimeoutException e) {
-
-            throw new CouponException(CouponErrorCode.LOCK_ACQUISITION_FAILED);
-        }
+        couponHistoryCommandRepository.save(UserCouponHistory.createUseHistory(coupon.getUserId(), coupon.getOrderId(), coupon));
 
         return CouponResultMapper.toResult(coupon);
     }
-
-
 }

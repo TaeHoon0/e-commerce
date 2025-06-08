@@ -24,11 +24,6 @@ public class CouponRepositoryImpl implements CouponCommandRepository, CouponQuer
     }
 
     @Override
-    public UserCoupon issue(UserCoupon userCoupon) {
-        return null;
-    }
-
-    @Override
     public Optional<UserCoupon> findByTemplateIdWithLock(Long templateId) {
 
         return couponQueryDslRepository.findByTemplateIdWithLock(templateId);
