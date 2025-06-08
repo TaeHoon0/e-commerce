@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.point.application.usecase.in;
 
-import jakarta.persistence.LockTimeoutException;
 import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
 import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
 import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
@@ -12,12 +11,10 @@ import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
-import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointHistoryCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import kr.hhplus.be.server.point.domain.service.PointService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.PessimisticLockException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
