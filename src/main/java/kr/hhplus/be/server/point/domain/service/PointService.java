@@ -2,7 +2,6 @@ package kr.hhplus.be.server.point.domain.service;
 
 import jakarta.persistence.LockTimeoutException;
 import kr.hhplus.be.server.point.domain.PointChangeType;
-import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.domain.entity.Point;
 
 import java.math.BigDecimal;

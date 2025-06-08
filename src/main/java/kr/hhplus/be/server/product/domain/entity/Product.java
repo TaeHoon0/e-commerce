@@ -23,7 +23,7 @@ public class Product extends BaseTimeEntity {
     @Column(name = "tp_key", nullable = false)
     private Long id;
 
-    @Column(name = "tp_name", length = 50, nullable = false)
+    @Column(name = "tp_name", length = 50, nullable = false, unique = true)
     private String name;
 
     @Column(name = "tp_description", nullable = false)
@@ -34,15 +34,24 @@ public class Product extends BaseTimeEntity {
     private ProductStatus status;
 
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProductOption> productOptions;
+    private List<ProductOption> options;
 
-    public static Product createNew(String name, String description) {
+    public static Product create(String name, String description) {
 
         return Product.builder()
                 .name(name)
                 .description(description)
                 .status(ProductStatus.INACTIVE)
                 .build();
+    }
+
+    public void addOption(ProductOption option) {
+        option.setProduct(this);
+        this.options.add(option);
+    }
+
+    public void addOptions(List<ProductOption> options) {
+        options.forEach(this::addOption);
     }
 
     public void changeStatus(ProductStatus status) {

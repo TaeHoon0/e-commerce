@@ -1,14 +1,12 @@
 package kr.hhplus.be.server.point.domain.service;
 
 import kr.hhplus.be.server.point.domain.PointChangeType;
-import kr.hhplus.be.server.point.domain.PointPolicy;
 import kr.hhplus.be.server.point.domain.entity.Point;
 import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
 import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
 import org.hibernate.PessimisticLockException;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

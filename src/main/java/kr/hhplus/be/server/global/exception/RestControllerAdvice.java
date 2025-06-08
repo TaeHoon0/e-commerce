@@ -34,8 +34,8 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
     public ResponseEntity<ApiResult<Void>> handleProductException(ProductException e) {
 
         return ResponseEntity
-                .status(e.getErrorCode().getStatus())
-                .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
+                .status(e.getProductErrorCode().getStatus())
+                .body(ApiResult.error(e.getProductErrorCode().getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(value = CouponException.class)

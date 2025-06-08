@@ -7,6 +7,7 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
+@Setter
 @Getter
 @Builder
 @AllArgsConstructor
@@ -20,7 +21,7 @@ public class ProductOption extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tpo_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Column(name = "tpo_option_name", length = 50, nullable = false)
     private String optionName;
@@ -35,7 +36,7 @@ public class ProductOption extends BaseTimeEntity {
     @JoinColumn(name = "tpo_tp_key", nullable = false)
     private Product product;
 
-    public static ProductOption createNew(String optionName, Integer quantity, BigDecimal price) {
+    public static ProductOption create(String optionName, int quantity, BigDecimal price) {
 
         return ProductOption.builder()
                 .optionName(optionName)
