@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.order.domain.entity;
 
 import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import kr.hhplus.be.server.order.domain.OrderStatus;
 import lombok.*;
 
@@ -20,7 +22,7 @@ public class Order extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "to_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "to_status", length = 10, nullable = false)
@@ -40,4 +42,17 @@ public class Order extends BaseTimeEntity {
 
     @Column(name = "to_tuc_key", nullable = false)
     private Long userCouponKey;
+
+    @Setter
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @Builder.Default
+    private List<OrderItem> items = new ArrayList<>();
+
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private Payment payment;
+
+    @Setter
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private Refund refund;
 }

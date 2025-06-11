@@ -19,7 +19,7 @@ public class OrderItem extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "toi_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Column(name = "toi_product_name", length = 50, nullable = false)
     private String productName;

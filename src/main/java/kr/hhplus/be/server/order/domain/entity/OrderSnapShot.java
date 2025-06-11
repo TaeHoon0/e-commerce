@@ -20,7 +20,7 @@ public class OrderSnapShot extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tos_key", nullable = false)
-    private Long key;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tos_befor_status")
@@ -38,6 +38,9 @@ public class OrderSnapShot extends BaseTimeEntity {
 
     @Column(name = "tos_final_price", precision = 15, scale = 2, nullable = false)
     private BigDecimal finalPrice;
+
+    @Column(name = "tos_snapshot_json", columnDefinition = "json", nullable = false)
+    private String snapshotJson;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tos_to_key", nullable = false)
