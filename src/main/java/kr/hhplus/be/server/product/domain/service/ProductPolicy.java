@@ -21,4 +21,6 @@ public class ProductPolicy {
             throw new ProductException(ProductErrorCode.EXCEED_PRODUCT_OPTION);
         }
     }
+
+    public void validateDecrease()
 }

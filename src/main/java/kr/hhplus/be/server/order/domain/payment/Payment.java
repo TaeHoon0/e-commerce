@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.order.domain.entity;
+package kr.hhplus.be.server.order.domain.payment;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -15,8 +15,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
-import kr.hhplus.be.server.order.domain.PaymentMethod;
-import kr.hhplus.be.server.order.domain.PaymentStatus;
+
+import kr.hhplus.be.server.order.domain.BaseTimeEntity;
+import kr.hhplus.be.server.order.domain.order.Order;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -33,7 +34,7 @@ import lombok.NoArgsConstructor;
     @AttributeOverride(name = "modifiedDate", column = @Column(name = "tp_mod_date"))
 })
 @Table(name = "tb_order_payment")
-public class Payment extends BaseTimeEntity{
+public class Payment extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tp_key")

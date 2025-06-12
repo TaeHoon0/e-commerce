@@ -1,6 +1,7 @@
-package kr.hhplus.be.server.order.domain.entity;
+package kr.hhplus.be.server.order.domain.order;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.order.domain.BaseTimeEntity;
 import lombok.*;
 
 import java.math.BigDecimal;

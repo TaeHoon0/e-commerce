@@ -1,9 +1,11 @@
-package kr.hhplus.be.server.order.domain.entity;
+package kr.hhplus.be.server.order.domain.order;
 
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import kr.hhplus.be.server.order.domain.OrderStatus;
+
+import kr.hhplus.be.server.order.domain.BaseTimeEntity;
+import kr.hhplus.be.server.order.domain.payment.Payment;
 import lombok.*;
 
 import java.math.BigDecimal;

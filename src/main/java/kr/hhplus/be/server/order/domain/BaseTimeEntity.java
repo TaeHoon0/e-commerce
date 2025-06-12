@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.order.domain.entity;
+package kr.hhplus.be.server.order.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

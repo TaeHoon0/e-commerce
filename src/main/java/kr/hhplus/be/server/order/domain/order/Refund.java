@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.order.domain.entity;
+package kr.hhplus.be.server.order.domain.order;
 
 import jakarta.persistence.AttributeOverride;
 import jakarta.persistence.AttributeOverrides;
@@ -14,6 +14,8 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import kr.hhplus.be.server.order.domain.BaseTimeEntity;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -30,7 +32,7 @@ import lombok.NoArgsConstructor;
     @AttributeOverride(name = "modifiedDate", column = @Column(name = "tr_mod_date"))
 })
 @Table(name = "tb_order_refund")
-public class Refund extends BaseTimeEntity{
+public class Refund extends BaseTimeEntity {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tr_key")
