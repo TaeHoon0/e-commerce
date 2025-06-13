@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.coupon.application.port.in;
 
-import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
-import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.dto.command.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.result.TemplateResult;
 
 public interface TemplatePort {
 

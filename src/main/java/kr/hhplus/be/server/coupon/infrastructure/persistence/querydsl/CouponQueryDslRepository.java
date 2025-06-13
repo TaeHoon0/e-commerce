@@ -8,6 +8,7 @@ import jakarta.persistence.LockModeType;
 import java.util.Optional;
 import kr.hhplus.be.server.coupon.domain.CouponStatus;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
+import kr.hhplus.be.server.coupon.infrastructure.persistence.querydsl.condition.CouponQueryCondition;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -52,5 +53,16 @@ public class CouponQueryDslRepository {
         query.setHint("javax.persistence.lock.timeout", 3);
 
         return Optional.ofNullable(query.fetchFirst());
+    }
+
+    public Optional<UserCoupon> findByCondition(CouponQueryCondition condition) {
+
+        return Optional.ofNullable(
+            queryFactory.selectFrom(userCoupon)
+                .where(userCoupon.id.eq(condition.getCouponId())
+                    .and(userCoupon.userId.eq(condition.getUserId()))
+                    .and(userCoupon.status.eq(condition.getStatus())))
+                .fetchFirst()
+        );
     }
 }

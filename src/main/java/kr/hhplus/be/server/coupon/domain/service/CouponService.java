@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.coupon.domain.service;
 
 import jakarta.persistence.LockTimeoutException;
+import java.util.Optional;
+import kr.hhplus.be.server.coupon.domain.CouponStatus;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.exception.CouponErrorCode;
 import kr.hhplus.be.server.coupon.domain.exception.CouponException;
@@ -60,6 +62,15 @@ public class CouponService {
 
             throw new CouponException(CouponErrorCode.LOCK_ACQUISITION_FAILED);
         }
+    }
+
+    public boolean validateCoupon(long userId, long couponId, BigDecimal totalPrice) {
+
+        Optional<UserCoupon> coupon = couponQueryRepository
+            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE);
+
+        if(coupon.isEmpty()) return false;
+
 
     }
 }

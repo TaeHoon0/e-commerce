@@ -1,13 +1,11 @@
 package kr.hhplus.be.server.product.presentation.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import kr.hhplus.be.server.global.dto.ApiResult;
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductResult;
+import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.application.port.in.ProductPort;
 import kr.hhplus.be.server.product.presentation.dto.request.AddProductOptionRequest;
 import kr.hhplus.be.server.product.presentation.dto.request.ProductRequest;
-import kr.hhplus.be.server.product.presentation.dto.response.ProductOptionResponse;
 import kr.hhplus.be.server.product.presentation.dto.response.ProductResponse;
 import kr.hhplus.be.server.product.presentation.mapper.ProductOptionRequestMapper;
 import kr.hhplus.be.server.product.presentation.mapper.ProductRequestMapper;
@@ -17,8 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Validated
 @RestController

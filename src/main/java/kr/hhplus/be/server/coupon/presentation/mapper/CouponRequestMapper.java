@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.coupon.presentation.mapper;
 
-import kr.hhplus.be.server.coupon.application.dto.request.IssueCouponCommand;
+import kr.hhplus.be.server.coupon.application.dto.command.IssueCouponCommand;
 import kr.hhplus.be.server.coupon.presentation.dto.request.IssueCouponRequest;
 
 public class CouponRequestMapper {

@@ -1,11 +1,10 @@
 package kr.hhplus.be.server.point.presentation.controller;
 
 import jakarta.validation.Valid;
-import jakarta.validation.constraints.Min;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
-import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
-import kr.hhplus.be.server.point.application.dto.response.PointResult;
+import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.result.PointResult;
 import kr.hhplus.be.server.point.application.port.in.PointPort;
 import kr.hhplus.be.server.point.presentation.dto.request.PointRequest;
 import kr.hhplus.be.server.point.presentation.dto.response.PointHistoryResponse;

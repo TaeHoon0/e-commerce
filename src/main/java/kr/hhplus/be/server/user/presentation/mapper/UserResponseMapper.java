@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.user.presentation.mapper;
 
-import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
-import kr.hhplus.be.server.user.application.dto.response.UserResult;
+import kr.hhplus.be.server.user.application.dto.result.LoginUserResult;
+import kr.hhplus.be.server.user.application.dto.result.UserResult;
 import kr.hhplus.be.server.user.presentation.dto.response.LoginUserResponse;
 import kr.hhplus.be.server.user.presentation.dto.response.UserResponse;
 

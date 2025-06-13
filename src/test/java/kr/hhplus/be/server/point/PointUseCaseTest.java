@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.point;
 
-import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
-import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
-import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.command.ChargePointCommand;
+import kr.hhplus.be.server.point.application.dto.command.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
 import kr.hhplus.be.server.point.application.usecase.in.PointUseCase;
 import kr.hhplus.be.server.point.domain.PointChangeType;
 import kr.hhplus.be.server.point.domain.entity.Point;

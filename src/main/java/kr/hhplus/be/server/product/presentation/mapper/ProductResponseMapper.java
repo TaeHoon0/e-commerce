@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.product.presentation.mapper;
 
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductResult;
+import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.presentation.dto.response.ProductOptionResponse;
 import kr.hhplus.be.server.product.presentation.dto.response.ProductResponse;
 

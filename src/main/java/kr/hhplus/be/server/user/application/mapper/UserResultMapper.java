@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.user.application.mapper;
 
-import kr.hhplus.be.server.user.application.dto.response.UserResult;
+import kr.hhplus.be.server.user.application.dto.result.UserResult;
 import kr.hhplus.be.server.user.domain.entity.User;
 
 public class UserResultMapper {

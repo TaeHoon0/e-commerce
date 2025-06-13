@@ -2,11 +2,11 @@ package kr.hhplus.be.server.product.application.usecase.in;
 
 import jakarta.transaction.Transactional;
 import java.util.List;
-import kr.hhplus.be.server.product.application.dto.request.AddProductOptionCommand;
-import kr.hhplus.be.server.product.application.dto.request.DecreaseStockCommand;
-import kr.hhplus.be.server.product.application.dto.request.ProductOptionCommand;
-import kr.hhplus.be.server.product.application.dto.request.RegisterProductCommand;
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductResult;
+import kr.hhplus.be.server.product.application.dto.command.AddProductOptionCommand;
+import kr.hhplus.be.server.product.application.dto.command.DecreaseStockCommand;
+import kr.hhplus.be.server.product.application.dto.command.ProductOptionCommand;
+import kr.hhplus.be.server.product.application.dto.command.RegisterProductCommand;
+import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.application.mapper.ProductMapper;
 import kr.hhplus.be.server.product.application.mapper.ProductResultMapper;
 import kr.hhplus.be.server.product.application.port.in.ProductPort;

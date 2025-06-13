@@ -19,7 +19,7 @@ public class OrderOutbox {
     @Column(name = "too_key")
     private Long id;
 
-    @Column(name = "too_tp_id", length = 50, nullable = false)
+    @Column(name = "too_to_key", length = 50, nullable = false)
     private Long orderId;
 
     @Column(name = "too_order_status", length = 100, nullable = false)

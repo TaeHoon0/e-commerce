@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.coupon.presentation.mapper;
 
-import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.command.CreateTemplateCommand;
 import kr.hhplus.be.server.coupon.presentation.dto.request.TemplateRequest;
 
 public class TemplateRequestMapper {

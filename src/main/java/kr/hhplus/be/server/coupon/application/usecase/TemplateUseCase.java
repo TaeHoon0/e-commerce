@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
-import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
-import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.dto.command.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.result.TemplateResult;
 import kr.hhplus.be.server.coupon.application.mapper.TemplateResultMapper;
 import kr.hhplus.be.server.coupon.application.port.in.TemplatePort;
 import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;

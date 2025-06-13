@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.point.application.mapper;
 
-import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
 import kr.hhplus.be.server.point.domain.entity.PointHistory;
 
 public class PointHistoryResultMapper {
