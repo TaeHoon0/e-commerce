@@ -1,9 +1,12 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
 import jakarta.validation.Valid;
+import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
 import kr.hhplus.be.server.coupon.application.port.in.TemplatePort;
 import kr.hhplus.be.server.coupon.presentation.dto.request.TemplateRequest;
+import kr.hhplus.be.server.coupon.presentation.dto.reseponse.CreateTemplateResponse;
 import kr.hhplus.be.server.coupon.presentation.mapper.TemplateRequestMapper;
+import kr.hhplus.be.server.coupon.presentation.mapper.TemplateResponseMapper;
 import kr.hhplus.be.server.global.dto.ApiResult;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,14 +30,14 @@ public class TemplateController {
      */
     @PostMapping("/templates")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ApiResult<Void>> createCouponTemplate(
+    public ResponseEntity<ApiResult<CreateTemplateResponse>> createCouponTemplate(
         @RequestBody @Valid TemplateRequest request
     ) {
 
-        port.createTemplate(TemplateRequestMapper.toCreateCommand(request));
+        TemplateResult result = port.createTemplate(TemplateRequestMapper.toCreateCommand(request));
 
         return ResponseEntity.ok(
-            ApiResult.ok()
+            ApiResult.ok(TemplateResponseMapper.toResponse(result))
         );
     }
 }

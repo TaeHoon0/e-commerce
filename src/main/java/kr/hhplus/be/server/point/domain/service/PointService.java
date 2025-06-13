@@ -1,44 +1,68 @@
 package kr.hhplus.be.server.point.domain.service;
 
-import kr.hhplus.be.server.point.domain.PointPolicy;
+import jakarta.persistence.LockTimeoutException;
+import kr.hhplus.be.server.point.domain.PointChangeType;
 import kr.hhplus.be.server.point.domain.entity.Point;
-import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
-import kr.hhplus.be.server.point.domain.exception.PointException;
-import kr.hhplus.be.server.point.domain.repository.PointRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+
+import kr.hhplus.be.server.point.domain.exception.PointErrorCode;
+import kr.hhplus.be.server.point.domain.exception.PointException;
+import kr.hhplus.be.server.point.domain.repository.PointCommandRepository;
+import kr.hhplus.be.server.point.domain.repository.PointQueryRepository;
+import lombok.RequiredArgsConstructor;
+import org.hibernate.PessimisticLockException;
+import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class PointService {
 
     private final PointPolicy pointPolicy;
-    private final PointRepository pointRepository;
+    private final PointQueryRepository pointQueryRepository;
+    private final PointCommandRepository pointCommandRepository;
 
-    public Point charge(Long userId, BigDecimal amount) {
 
-        Point point = pointRepository.findByUserIdWithLock(userId)
-                .orElseGet(() -> pointRepository.save(Point.createNew(userId)));
+    public Point charge(
+            long userId , BigDecimal amount, PointChangeType type
+    ) {
 
-        // 보유한도 검증
-        pointPolicy.validateMaxPoint(point.getAmount(), amount);
+        try {
 
-        point.charge(amount);
+            Point point = pointQueryRepository.findByUserIdWithLock(userId)
+                    .orElseGet(() -> pointCommandRepository.save(Point.create(userId)));
 
-        return point;
+            type.validateForCharge();
+            pointPolicy.validateMaxPoint(point.getAmount(), amount);
+
+            point.charge(amount);
+
+            return point;
+
+        } catch (PessimisticLockException | LockTimeoutException e) {
+
+            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
+        }
     }
 
-    public Point use(Long userId, BigDecimal amount) {
+    public Point use(long userId, BigDecimal amount, PointChangeType type) {
 
-        Point point = pointRepository.findByUserIdWithLock(userId)
-                .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
 
-        pointPolicy.validateMinPoint(point.getAmount(), amount);
+        try {
 
-        point.use(amount);
+            Point point = pointQueryRepository.findByUserIdWithLock(userId)
+                    .orElseGet(() -> pointCommandRepository.save(Point.create(userId)));
 
-        return point;
+            type.validateForUse();
+            pointPolicy.validateMinPoint(point.getAmount(), amount);
+
+            point.use(amount);
+
+            return point;
+
+        } catch (PessimisticLockException | LockTimeoutException e) {
+
+            throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
+        }
     }
 }

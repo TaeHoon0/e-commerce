@@ -1,8 +1,12 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
 import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.mapper.TemplateResultMapper;
 import kr.hhplus.be.server.coupon.application.port.in.TemplatePort;
 import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;
+import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
+import kr.hhplus.be.server.coupon.domain.repository.CouponCommandRepository;
 import kr.hhplus.be.server.coupon.domain.repository.TemplateCommandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,10 +17,11 @@ import org.springframework.transaction.annotation.Transactional;
 public class TemplateUseCase implements TemplatePort {
 
     private final TemplateCommandRepository templateCommandRepository;
+    private final CouponCommandRepository couponCommandRepository;
 
     @Override
     @Transactional
-    public void createTemplate(CreateTemplateCommand command) {
+    public TemplateResult createTemplate(CreateTemplateCommand command) {
 
         CouponTemplate template = CouponTemplate.create(
             command.templateName(),
@@ -28,6 +33,16 @@ public class TemplateUseCase implements TemplatePort {
 
         template = templateCommandRepository.save(template);
 
-        //TODO 쿠폰 totalCount 개수만큼 생성하기
+        UserCoupon userCoupon = UserCoupon.create(
+            template.getName(),
+            template.getDiscountAmount(),
+            template.getMinimumPrice(),
+            template.getExpireDate(),
+            template
+        );
+
+        couponCommandRepository.bulkInsert(userCoupon , command.totalCount());
+
+        return TemplateResultMapper.toResult(template);
     }
 }

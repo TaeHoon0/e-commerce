@@ -5,10 +5,10 @@ import lombok.Getter;
 @Getter
 public class ProductException extends RuntimeException {
 
-    private final ErrorCode errorCode;
+    private final ProductErrorCode productErrorCode;
 
-    public ProductException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
-        this.errorCode = errorCode;
+    public ProductException(ProductErrorCode productErrorCode) {
+        super(productErrorCode.getMessage());
+        this.productErrorCode = productErrorCode;
     }
 }

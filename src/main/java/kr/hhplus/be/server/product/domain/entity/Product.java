@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.hhplus.be.server.product.domain.ProductStatus;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -23,7 +24,7 @@ public class Product extends BaseTimeEntity {
     @Column(name = "tp_key", nullable = false)
     private Long id;
 
-    @Column(name = "tp_name", length = 50, nullable = false)
+    @Column(name = "tp_name", length = 50, nullable = false, unique = true)
     private String name;
 
     @Column(name = "tp_description", nullable = false)
@@ -33,16 +34,26 @@ public class Product extends BaseTimeEntity {
     @Column(name = "tp_status", length = 10, nullable = false)
     private ProductStatus status;
 
+    @Builder.Default
     @OneToMany(mappedBy = "product", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProductOption> productOptions;
+    private List<ProductOption> options = new ArrayList<>();
 
-    public static Product createNew(String name, String description) {
+    public static Product create(String name, String description) {
 
         return Product.builder()
                 .name(name)
                 .description(description)
                 .status(ProductStatus.INACTIVE)
                 .build();
+    }
+
+    public void addOption(ProductOption option) {
+        option.setProduct(this);
+        this.options.add(option);
+    }
+
+    public void addOptions(List<ProductOption> options) {
+        options.forEach(this::addOption);
     }
 
     public void changeStatus(ProductStatus status) {

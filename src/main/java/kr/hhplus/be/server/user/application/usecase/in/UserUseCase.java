@@ -1,7 +1,6 @@
 package kr.hhplus.be.server.user.application.usecase.in;
 
 
-import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.global.config.jwt.JwtUtil;
 import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
 import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
@@ -17,6 +16,7 @@ import kr.hhplus.be.server.user.domain.repository.UserCommandRepository;
 import kr.hhplus.be.server.user.domain.repository.UserQueryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
@@ -40,7 +40,7 @@ public class UserUseCase implements UserPort {
 
         user = userCommandRepository.save(user);
 
-        return UserResultMapper.toDto(user);
+        return UserResultMapper.toResult(user);
     }
 
     @Override
@@ -49,10 +49,11 @@ public class UserUseCase implements UserPort {
         User user = userQueryRepository.findById(key)
                 .orElseThrow(() -> new UserException(UserErrorCode.USER_NOT_FOUND));
 
-        return UserResultMapper.toDto(user);
+        return UserResultMapper.toResult(user);
     }
 
     @Override
+    @Transactional
     public LoginUserResult login(LoginUserCommand command) {
 
         User user = userQueryRepository.findByEmail(command.email())

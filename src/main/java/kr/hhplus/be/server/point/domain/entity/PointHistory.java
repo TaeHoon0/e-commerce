@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.point.domain.entity;
 
 import jakarta.persistence.*;
-import kr.hhplus.be.server.point.domain.PointChangedType;
+import kr.hhplus.be.server.point.domain.PointChangeType;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,13 +27,13 @@ public class PointHistory extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "tph_changed_type", nullable = false)
-    private PointChangedType changedType;
+    private PointChangeType changedType;
 
     @ManyToOne
     @JoinColumn(name = "tph_tp_key", nullable = false)
     private Point point;
 
-    public static PointHistory from(Point point, BigDecimal changedAmount,  PointChangedType changedType) {
+    public static PointHistory create(Point point, BigDecimal changedAmount,  PointChangeType changedType) {
 
         return PointHistory.builder()
                 .point(point)

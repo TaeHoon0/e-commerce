@@ -1,7 +1,8 @@
 package kr.hhplus.be.server.coupon.domain;
 
 public enum CouponStatus {
-    USE,
+    UNASSIGNED,
+    USED,
     AVAILABLE,
     EXPIRED
 }

@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public record ProductOptionResponse (
 
-        Long key,
+        Long id,
         String optionName,
         int quantity,
         BigDecimal price

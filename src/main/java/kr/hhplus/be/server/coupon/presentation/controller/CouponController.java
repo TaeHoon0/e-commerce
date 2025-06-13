@@ -6,6 +6,7 @@ import kr.hhplus.be.server.coupon.application.port.in.CouponPort;
 import kr.hhplus.be.server.coupon.presentation.dto.request.IssueCouponRequest;
 import kr.hhplus.be.server.coupon.presentation.dto.reseponse.CouponResponse;
 import kr.hhplus.be.server.coupon.presentation.mapper.CouponRequestMapper;
+import kr.hhplus.be.server.coupon.presentation.mapper.CouponResponseMapper;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +39,7 @@ public class CouponController {
         CouponResult result = port.issueCoupon(CouponRequestMapper.toIssueCommand(user.getId(), request));
 
         return ResponseEntity.ok(
-            ApiResult.ok()
+            ApiResult.ok(CouponResponseMapper.toResponse(result))
         );
     }
 
@@ -46,7 +47,7 @@ public class CouponController {
      * 쿠폰 사용
      */
     @PostMapping("/use")
-    public ResponseEntity<ApiResult<>> useCoupon() {
+    public ResponseEntity<ApiResult<Void>> useCoupon() {
 
         return null;
     }
@@ -55,7 +56,7 @@ public class CouponController {
      * 쿠폰 목록 조회
      */
     @GetMapping("/list")
-    public ResponseEntity<ApiResult<>> getCouponList() {
+    public ResponseEntity<ApiResult<Void>> getCouponList() {
 
         return null;
     }
