@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.point.presentation.mapper;
 
-import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
-import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.command.ChargePointCommand;
+import kr.hhplus.be.server.point.application.dto.command.UsePointCommand;
 import kr.hhplus.be.server.point.presentation.dto.request.PointRequest;
 
 

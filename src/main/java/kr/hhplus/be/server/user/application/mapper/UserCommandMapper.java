@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.user.application.mapper;
 
-import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
+import kr.hhplus.be.server.user.application.dto.command.RegisterUserCommand;
 import kr.hhplus.be.server.user.domain.entity.User;
 
 public class UserCommandMapper {

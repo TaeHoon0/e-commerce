@@ -1,15 +1,11 @@
 package kr.hhplus.be.server.product.application.port.in;
 
-import kr.hhplus.be.server.product.application.dto.request.AddProductOptionCommand;
-import kr.hhplus.be.server.product.application.dto.request.DecreaseStockCommand;
-import kr.hhplus.be.server.product.application.dto.request.RegisterProductCommand;
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductResult;
+import kr.hhplus.be.server.product.application.dto.command.AddProductOptionCommand;
+import kr.hhplus.be.server.product.application.dto.command.DecreaseStockCommand;
+import kr.hhplus.be.server.product.application.dto.command.RegisterProductCommand;
+import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.domain.ProductStatus;
-import kr.hhplus.be.server.product.domain.entity.ProductOption;
-import kr.hhplus.be.server.product.presentation.dto.response.ProductOptionResponse;
 import kr.hhplus.be.server.product.presentation.dto.response.ProductResponse;
-
-import java.util.List;
 
 public interface ProductPort {
 

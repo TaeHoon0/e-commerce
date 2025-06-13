@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.product.application.mapper;
 
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductOptionResult;
-import kr.hhplus.be.server.product.application.dto.reseponse.ProductResult;
+import kr.hhplus.be.server.product.application.dto.result.ProductOptionResult;
+import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.domain.entity.Product;
 
 public class ProductResultMapper {

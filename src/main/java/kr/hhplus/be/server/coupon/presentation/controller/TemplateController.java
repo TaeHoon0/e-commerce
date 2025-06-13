@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.coupon.presentation.controller;
 
 import jakarta.validation.Valid;
-import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.dto.result.TemplateResult;
 import kr.hhplus.be.server.coupon.application.port.in.TemplatePort;
 import kr.hhplus.be.server.coupon.presentation.dto.request.TemplateRequest;
 import kr.hhplus.be.server.coupon.presentation.dto.reseponse.CreateTemplateResponse;

@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.point.application.port.in;
 
-import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
-import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
-import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
-import kr.hhplus.be.server.point.application.dto.response.PointResult;
+import kr.hhplus.be.server.point.application.dto.command.ChargePointCommand;
+import kr.hhplus.be.server.point.application.dto.command.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.result.PointResult;
 
 import java.util.List;
 

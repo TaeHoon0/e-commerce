@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.user.presentation.mapper;
 
-import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
-import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
+import kr.hhplus.be.server.user.application.dto.command.LoginUserCommand;
+import kr.hhplus.be.server.user.application.dto.command.RegisterUserCommand;
 import kr.hhplus.be.server.user.presentation.dto.request.LoginUserRequest;
 import kr.hhplus.be.server.user.presentation.dto.request.RegisterUserRequest;
 

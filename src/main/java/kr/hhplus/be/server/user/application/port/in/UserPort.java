@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.user.application.port.in;
 
-import kr.hhplus.be.server.user.application.dto.request.LoginUserCommand;
-import kr.hhplus.be.server.user.application.dto.request.RegisterUserCommand;
-import kr.hhplus.be.server.user.application.dto.response.LoginUserResult;
-import kr.hhplus.be.server.user.application.dto.response.UserResult;
+import kr.hhplus.be.server.user.application.dto.command.LoginUserCommand;
+import kr.hhplus.be.server.user.application.dto.command.RegisterUserCommand;
+import kr.hhplus.be.server.user.application.dto.result.LoginUserResult;
+import kr.hhplus.be.server.user.application.dto.result.UserResult;
 
 public interface UserPort {
 

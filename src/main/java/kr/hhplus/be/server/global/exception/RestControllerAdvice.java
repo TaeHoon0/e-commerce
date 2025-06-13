@@ -3,6 +3,7 @@ package kr.hhplus.be.server.global.exception;
 import kr.hhplus.be.server.coupon.domain.exception.CouponException;
 import kr.hhplus.be.server.global.dto.ApiResult;
 import kr.hhplus.be.server.global.dto.StatusCode;
+import kr.hhplus.be.server.order.domain.exception.OrderException;
 import kr.hhplus.be.server.point.domain.exception.PointException;
 import kr.hhplus.be.server.product.domain.exception.ProductException;
 import kr.hhplus.be.server.user.domain.exception.UserException;
@@ -44,6 +45,14 @@ public class RestControllerAdvice extends ResponseEntityExceptionHandler {
         return ResponseEntity
                 .status(e.getErrorCode().getStatus())
                 .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
+    }
+
+    @ExceptionHandler(value = OrderException.class)
+    public ResponseEntity<ApiResult<Void>> handleOrderException(OrderException e) {
+
+        return ResponseEntity
+            .status(e.getErrorCode().getStatus())
+            .body(ApiResult.error(e.getErrorCode().getCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

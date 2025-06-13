@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.coupon.application.mapper;
 
-import kr.hhplus.be.server.coupon.application.dto.response.CouponResult;
+import kr.hhplus.be.server.coupon.application.dto.result.CouponResult;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 
 public class CouponResultMapper {
