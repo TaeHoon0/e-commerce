@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import kr.hhplus.be.server.coupon.domain.CouponStatus;
 
+import kr.hhplus.be.server.coupon.domain.CouponType;
 import lombok.*;
 
 @Entity
@@ -28,6 +29,10 @@ public class UserCoupon extends BaseTimeEntity {
     @Column(name = "tuc_name", length = 30, nullable = false)
     private String name;
 
+    @Column(name = "tuc_type", length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CouponType type;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "tuc_status", length = 15, nullable = false)
     private CouponStatus status;
@@ -35,13 +40,13 @@ public class UserCoupon extends BaseTimeEntity {
     @Column(name = "tuc_discount_amount", nullable = false)
     private BigDecimal discountAmount;
 
-    @Column(name = "tuc_minimum_price")
+    @Column(name = "tuc_minimum_price", nullable = true)
     private BigDecimal minimumPrice;
 
-    @Column(name = "tuc_expire_date")
+    @Column(name = "tuc_expire_date", nullable = true)
     private LocalDateTime expireDate;
 
-    @Column(name = "tuc_issued_date")
+    @Column(name = "tuc_issued_date", nullable = true)
     private LocalDateTime issuedDate;
 
     @Column(name = "tuc_to_key", nullable = true)
@@ -55,11 +60,13 @@ public class UserCoupon extends BaseTimeEntity {
     private CouponTemplate couponTemplate;
 
     public static UserCoupon create(
-        String name, BigDecimal discountAmount, BigDecimal minimumPrice, LocalDateTime expireDate, CouponTemplate couponTemplate
+        String name, BigDecimal discountAmount, BigDecimal minimumPrice,
+        LocalDateTime expireDate, CouponType type, CouponTemplate couponTemplate
     ) {
 
         return UserCoupon.builder()
             .name(name)
+            .type(type)
             .status(CouponStatus.UNASSIGNED)
             .discountAmount(discountAmount)
             .minimumPrice(minimumPrice)

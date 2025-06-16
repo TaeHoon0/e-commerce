@@ -54,7 +54,8 @@ public class PointService {
                     .orElseGet(() -> pointCommandRepository.save(Point.create(userId)));
 
             type.validateForUse();
-            pointPolicy.validateMinPoint(point.getAmount(), amount);
+
+            pointPolicy.validateRemainPoint(point.getAmount(), amount);
 
             point.use(amount);
 
@@ -64,5 +65,15 @@ public class PointService {
 
             throw new PointException(PointErrorCode.LOCK_ACQUISITION_FAILED);
         }
+    }
+
+    public boolean validate(long userId, BigDecimal amount) {
+
+        Point point = pointQueryRepository.findByUserId(userId)
+            .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
+
+        pointPolicy.validateRemainPoint(point.getAmount(), amount);
+
+        return true;
     }
 }

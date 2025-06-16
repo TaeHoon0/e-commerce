@@ -30,8 +30,14 @@ public enum OrderErrorCode {
     REFUND_PROCESSING_FAILED      (HttpStatus.INTERNAL_SERVER_ERROR,"5003007", "환불 처리에 실패했습니다."),
     INVALID_PAYMENT_STATUS        (HttpStatus.BAD_REQUEST,          "4003008", "잘못된 결제 상태입니다."),
 
-    //쿠폰
-    INVALID_COUPON_REQUEST        (HttpStatus.BAD_REQUEST,          "4004001", "유효하지 않은 쿠폰입니다.")
+    // 쿠폰
+    INVALID_COUPON_REQUEST        (HttpStatus.BAD_REQUEST,          "4004001", "유효하지 않은 쿠폰입니다."),
+
+    // 포인트
+    INVALID_POINT_REQUEST         (HttpStatus.BAD_REQUEST,          "4005001", "유효하지 않은 포인트입니다."),
+
+    // 상품
+    INVALID_PRODUCT_REQUEST       (HttpStatus.BAD_REQUEST,          "4006001", "유효하지 않은 상품입니다.")
     ;
 
 

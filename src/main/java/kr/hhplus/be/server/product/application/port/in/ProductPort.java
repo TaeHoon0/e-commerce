@@ -3,6 +3,7 @@ package kr.hhplus.be.server.product.application.port.in;
 import kr.hhplus.be.server.product.application.dto.command.AddProductOptionCommand;
 import kr.hhplus.be.server.product.application.dto.command.DecreaseStockCommand;
 import kr.hhplus.be.server.product.application.dto.command.RegisterProductCommand;
+import kr.hhplus.be.server.product.application.dto.command.ValidateStockQuery;
 import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.domain.ProductStatus;
 import kr.hhplus.be.server.product.presentation.dto.response.ProductResponse;
@@ -33,4 +34,9 @@ public interface ProductPort {
      * 상품 재고 감소
      */
     void decreaseStock(DecreaseStockCommand command);
+
+    /**
+     * 재고 체크
+     */
+    boolean validateStock(ValidateStockQuery query);
 }

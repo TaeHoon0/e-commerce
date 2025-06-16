@@ -1,8 +1,8 @@
-package kr.hhplus.be.server.product.application.dto.command;
+package kr.hhplus.be.server.product.application.dto;
 
 import java.math.BigDecimal;
 
-public record ProductOptionCommand (
+public record ProductOptionDto(
 
     Long optionId,
     String optionName,

@@ -132,13 +132,13 @@ class PointServiceTest {
 
         when(queryRepo.findByUserIdWithLock(userId))
                 .thenReturn(Optional.of(point));
-        doNothing().when(pointPolicy).validateMinPoint(existing, useAmount);
+        doNothing().when(pointPolicy).validateRemainPoint(existing, useAmount);
 
         // when
         Point result = pointService.use(userId, useAmount, PointChangeType.USE);
 
         // then
-        verify(pointPolicy).validateMinPoint(existing, useAmount);
+        verify(pointPolicy).validateRemainPoint(existing, useAmount);
         assertEquals(existing.subtract(useAmount), result.getAmount());
     }
 
@@ -154,7 +154,7 @@ class PointServiceTest {
         when(queryRepo.findByUserIdWithLock(userId))
                 .thenReturn(Optional.of(point));
         doThrow(new PointException(PointErrorCode.BELOW_MIN_POINT))
-                .when(pointPolicy).validateMinPoint(existing, useAmount);
+                .when(pointPolicy).validateRemainPoint(existing, useAmount);
 
         // when & then
         PointException ex = assertThrows(PointException.class, () ->

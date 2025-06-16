@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 
 public record PointCommand (
 
-    Long userId,
     BigDecimal amount
 ){
 

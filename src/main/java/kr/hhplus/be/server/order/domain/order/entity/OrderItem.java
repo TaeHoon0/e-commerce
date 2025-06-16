@@ -22,11 +22,11 @@ public class OrderItem extends BaseTimeEntity {
     @Column(name = "toi_key", nullable = false)
     private Long id;
 
-    @Column(name = "toi_product_name", length = 50, nullable = false)
-    private String productName;
+    @Column(name = "toi_tp_id")
+    private Long productId;
 
-    @Column(name = "toi_product_option_name", length = 50, nullable = false)
-    private String productOptionName;
+    @Column(name = "toi_tpo_id")
+    private Long productOptionId;
 
     @Column(name = "toi_quantity", nullable = false)
     private Integer quantity;
@@ -40,12 +40,12 @@ public class OrderItem extends BaseTimeEntity {
 
 
     public static OrderItem create(
-        String productName, String productOptionName, Integer quantity, BigDecimal price
+        long productId, long productOptionId, Integer quantity, BigDecimal price
     ) {
 
         return OrderItem.builder()
-            .productName(productName)
-            .productOptionName(productOptionName)
+            .productId(productId)
+            .productOptionId(productOptionId)
             .quantity(quantity)
             .price(price)
             .build();

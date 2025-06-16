@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.coupon.application.port.in;
 
+import java.math.BigDecimal;
+import kr.hhplus.be.server.coupon.application.dto.command.CalculateCouponQuery;
 import kr.hhplus.be.server.coupon.application.dto.command.IssueCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.command.UseCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.command.ValidateCouponQuery;
@@ -13,4 +15,6 @@ public interface CouponPort {
     CouponResult useCoupon(UseCouponCommand command);
 
     boolean validateCoupon(ValidateCouponQuery query);
+
+    BigDecimal calculateDiscount(CalculateCouponQuery query);
 }

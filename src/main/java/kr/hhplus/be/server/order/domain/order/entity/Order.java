@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.order.domain.order.entity;
 
 import jakarta.persistence.*;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,10 +42,10 @@ public class Order extends BaseTimeEntity {
     private BigDecimal finalPrice;
 
     @Column(name = "to_tu_key", nullable = false)
-    private Long userKey;
+    private Long userId;
 
     @Column(name = "to_tuc_key", nullable = false)
-    private Long userCouponKey;
+    private Long couponId;
 
     @Setter
     @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
@@ -61,9 +62,21 @@ public class Order extends BaseTimeEntity {
 
 
     public static Order create(
-
+        long userId, long couponId, List<OrderItem> items
     ) {
         return Order.builder()
+            .userId(userId)
+            .couponId(couponId)
+            .items(items)
             .build();
+    }
+
+    public void calculateTotalPrice() {
+        this.totalPrice = items.stream()
+            .map(orderItem ->
+                orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()))
+                         .setScale(2, RoundingMode.HALF_UP)
+            )
+            .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

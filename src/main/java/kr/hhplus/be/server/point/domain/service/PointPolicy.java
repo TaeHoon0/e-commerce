@@ -25,7 +25,7 @@ public class PointPolicy {
         }
     }
 
-    public void validateMinPoint(BigDecimal currentPoint, BigDecimal amount) {
+    public void validateRemainPoint(BigDecimal currentPoint, BigDecimal amount) {
 
         BigDecimal afterAmount = currentPoint.subtract(amount);
 

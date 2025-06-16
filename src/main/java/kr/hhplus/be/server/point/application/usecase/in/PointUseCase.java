@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.point.application.usecase.in;
 
+import java.math.BigDecimal;
 import kr.hhplus.be.server.point.application.dto.command.ChargePointCommand;
 import kr.hhplus.be.server.point.application.dto.command.UsePointCommand;
 import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
@@ -67,5 +68,11 @@ public class PointUseCase implements PointPort {
                 .orElseThrow(() -> new PointException(PointErrorCode.POINT_NOT_FOUND));
 
         return point.getHistories().stream().map(PointHistoryResultMapper::toResult).toList();
+    }
+
+    @Override
+    public boolean validatePoint(Long userId, BigDecimal amount) {
+
+        return pointService.validate(userId, amount);
     }
 }

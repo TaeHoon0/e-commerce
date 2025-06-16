@@ -6,10 +6,8 @@ import java.math.BigDecimal;
 public record PointDto (
 
     @Positive
-    BigDecimal usePoint,
+    BigDecimal usePoint
 
-    @Positive
-    BigDecimal chargePoint
 ){
 
 }

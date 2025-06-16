@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
+import java.math.BigDecimal;
+import kr.hhplus.be.server.coupon.application.dto.command.CalculateCouponQuery;
 import kr.hhplus.be.server.coupon.application.dto.command.IssueCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.command.UseCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.command.ValidateCouponQuery;
@@ -57,8 +59,13 @@ public class CouponUseCase implements CouponPort {
 
     public boolean validateCoupon(ValidateCouponQuery query) {
 
+        couponService.validateCoupon(query.userId(), query.couponId(), query.totalPrice());
 
+        return true;
+    }
 
-        return false;
+    public BigDecimal calculateDiscount(CalculateCouponQuery query) {
+
+        return couponService.calculateDiscount(query.userId(), query.couponId(), query.totalPrice());
     }
 }

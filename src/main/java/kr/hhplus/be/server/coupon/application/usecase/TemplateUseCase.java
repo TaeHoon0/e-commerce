@@ -28,7 +28,8 @@ public class TemplateUseCase implements TemplatePort {
             command.totalCount(),
             command.discountAmount(),
             command.minimumPrice(),
-            command.expireDate()
+            command.expireDate(),
+            command.type()
         );
 
         template = templateCommandRepository.save(template);
@@ -38,6 +39,7 @@ public class TemplateUseCase implements TemplatePort {
             template.getDiscountAmount(),
             template.getMinimumPrice(),
             template.getExpireDate(),
+            template.getType(),
             template
         );
 

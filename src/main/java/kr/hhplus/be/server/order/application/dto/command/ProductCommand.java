@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 
 public record ProductCommand(
 
+    Long productId,
     Long productOptionId,
-    Integer quantity,
-    BigDecimal price
+    BigDecimal price,
+    int quantity
+
 ) {
 
 }

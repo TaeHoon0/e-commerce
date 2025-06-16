@@ -12,7 +12,8 @@ public class TemplateRequestMapper {
             request.totalCount(),
             request.discountAmount(),
             request.minimumPrice(),
-            request.expireDate()
+            request.expireDate(),
+            request.type()
         );
     }
 }

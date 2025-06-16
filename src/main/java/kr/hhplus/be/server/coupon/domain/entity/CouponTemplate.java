@@ -2,6 +2,7 @@ package kr.hhplus.be.server.coupon.domain.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import kr.hhplus.be.server.coupon.domain.CouponType;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -25,6 +26,10 @@ public class CouponTemplate extends BaseTimeEntity {
     @Column(name = "tcp_name", length = 30, nullable = false)
     private String name;
 
+    @Column(name = "tcp_type", length = 10, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CouponType type;
+
     @Column(name = "tcp_total_count", nullable = false)
     private Integer totalCount;
 
@@ -41,11 +46,13 @@ public class CouponTemplate extends BaseTimeEntity {
     private LocalDateTime expireDate;
 
     public static CouponTemplate create(
-        String name, Integer totalCount, BigDecimal discountAmount, BigDecimal minimumPrice, LocalDateTime expireDate
+        String name, Integer totalCount, BigDecimal discountAmount, BigDecimal minimumPrice,
+        LocalDateTime expireDate, CouponType type
     ) {
 
         return CouponTemplate.builder()
             .name(name)
+            .type(type)
             .totalCount(totalCount)
             .remainCount(totalCount)
             .discountAmount(discountAmount)

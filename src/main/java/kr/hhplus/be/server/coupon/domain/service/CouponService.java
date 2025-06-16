@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 public class CouponService {
 
     private final CouponQueryRepository couponQueryRepository;
+    private final CouponPolicy couponPolicy;
 
     public UserCoupon issueCoupon(long userId, long templateId) {
 
@@ -64,13 +65,21 @@ public class CouponService {
         }
     }
 
-    public boolean validateCoupon(long userId, long couponId, BigDecimal totalPrice) {
+    public void validateCoupon(long userId, long couponId, BigDecimal totalPrice) {
 
-        Optional<UserCoupon> coupon = couponQueryRepository
-            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE);
+        UserCoupon coupon = couponQueryRepository
+            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)
+            .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
 
-        if(coupon.isEmpty()) return false;
+        couponPolicy.validate(coupon, totalPrice);
+    }
 
+    public BigDecimal calculateDiscount(long userId, long couponId, BigDecimal totalPrice) {
 
+        UserCoupon coupon = couponQueryRepository
+            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)
+            .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
+
+        return couponPolicy.calculate(coupon, totalPrice);
     }
 }

@@ -6,7 +6,10 @@ import java.math.BigDecimal;
 public record OrderItemDto(
 
         @Positive
-        Long itemId,
+        Long productId,
+
+        @Positive
+        Long productOptionId,
 
         @Positive
         Integer quantity,

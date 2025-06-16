@@ -4,8 +4,9 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import kr.hhplus.be.server.product.application.dto.command.AddProductOptionCommand;
 import kr.hhplus.be.server.product.application.dto.command.DecreaseStockCommand;
-import kr.hhplus.be.server.product.application.dto.command.ProductOptionCommand;
+import kr.hhplus.be.server.product.application.dto.ProductOptionDto;
 import kr.hhplus.be.server.product.application.dto.command.RegisterProductCommand;
+import kr.hhplus.be.server.product.application.dto.command.ValidateStockQuery;
 import kr.hhplus.be.server.product.application.dto.result.ProductResult;
 import kr.hhplus.be.server.product.application.mapper.ProductMapper;
 import kr.hhplus.be.server.product.application.mapper.ProductResultMapper;
@@ -80,6 +81,11 @@ public class ProductUseCase implements ProductPort {
 
         // TODO 재고 감소, 이력 저장
         productOptionService.decreaseProductOption(
-                command.items().stream().map(ProductOptionCommand::optionId).toList());
+                command.items().stream().map(ProductOptionDto::optionId).toList());
+    }
+
+    @Override
+    public boolean validateStock(ValidateStockQuery query) {
+        return true;
     }
 }
