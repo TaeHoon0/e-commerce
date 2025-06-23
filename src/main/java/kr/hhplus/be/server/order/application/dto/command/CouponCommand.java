@@ -1,11 +1,13 @@
 package kr.hhplus.be.server.order.application.dto.command;
 
-import jakarta.validation.constraints.Positive;
+
+import java.math.BigDecimal;
 
 public record CouponCommand (
 
-    @Positive
-    Long couponId
+    Long couponId,
+    BigDecimal discountAmount
+
 ) {
 
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class CouponPolicy {
 
     public void validate(
-        UserCoupon coupon, BigDecimal totalPrice
+        UserCoupon coupon, BigDecimal discountAmount, BigDecimal totalPrice
     ) {
 
         // 최소 주문 금액 검증
@@ -22,6 +22,9 @@ public class CouponPolicy {
         // 만료일자 검증
         if (coupon.getExpireDate() != null && coupon.getExpireDate().isAfter(LocalDateTime.now()))
             throw new CouponException(CouponErrorCode.INVALID_COUPON_EXPIRE_DATE);
+
+        if (coupon.getDiscountAmount().compareTo(discountAmount) > 0)
+            throw new CouponException(CouponErrorCode.INVALID_COUPON_AMOUNT);
     }
 
     public BigDecimal calculate(

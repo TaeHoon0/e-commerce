@@ -62,11 +62,13 @@ public class Order extends BaseTimeEntity {
 
 
     public static Order create(
-        long userId, long couponId, List<OrderItem> items
+        long userId, List<OrderItem> items
     ) {
         return Order.builder()
             .userId(userId)
-            .couponId(couponId)
+            .discountPrice(BigDecimal.ZERO)
+            .totalPrice(BigDecimal.ZERO)
+            .finalPrice(BigDecimal.ZERO)
             .items(items)
             .build();
     }
@@ -78,5 +80,20 @@ public class Order extends BaseTimeEntity {
                          .setScale(2, RoundingMode.HALF_UP)
             )
             .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.finalPrice = totalPrice;
+    }
+
+    public void applyCoupon(long couponId, BigDecimal discountAmount) {
+
+        this.couponId = couponId;
+        this.discountPrice = this.discountPrice.add(discountAmount);
+        this.finalPrice = this.finalPrice.subtract(discountAmount);
+    }
+
+    public void applyPoint(BigDecimal point) {
+
+        this.discountPrice = this.discountPrice.add(point);
+        this.finalPrice = this.finalPrice.subtract(point);
     }
 }

@@ -57,15 +57,17 @@ public class CouponUseCase implements CouponPort {
         return CouponResultMapper.toResult(coupon);
     }
 
+    @Override
     public boolean validateCoupon(ValidateCouponQuery query) {
 
-        couponService.validateCoupon(query.userId(), query.couponId(), query.totalPrice());
+        couponService.validateCoupon(query.userId(), query.couponId(), query.discountAmount(), query.totalPrice());
 
         return true;
     }
 
-    public BigDecimal calculateDiscount(CalculateCouponQuery query) {
+    @Override
+    public BigDecimal calculateDiscountAmount(CalculateCouponQuery query) {
 
-        return couponService.calculateDiscount(query.userId(), query.couponId(), query.totalPrice());
+        return couponService.calculateDiscountAmount(query.userId(), query.couponId(), query.totalPrice());
     }
 }

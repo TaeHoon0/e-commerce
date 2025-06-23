@@ -16,5 +16,5 @@ public interface CouponPort {
 
     boolean validateCoupon(ValidateCouponQuery query);
 
-    BigDecimal calculateDiscount(CalculateCouponQuery query);
+    BigDecimal calculateDiscountAmount(CalculateCouponQuery query);
 }

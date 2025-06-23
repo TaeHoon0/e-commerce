@@ -65,16 +65,18 @@ public class CouponService {
         }
     }
 
-    public void validateCoupon(long userId, long couponId, BigDecimal totalPrice) {
+    public void validateCoupon(
+        long userId, long couponId, BigDecimal discountAmount, BigDecimal totalPrice
+    ) {
 
         UserCoupon coupon = couponQueryRepository
             .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)
             .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
 
-        couponPolicy.validate(coupon, totalPrice);
+        couponPolicy.validate(coupon, discountAmount, totalPrice);
     }
 
-    public BigDecimal calculateDiscount(long userId, long couponId, BigDecimal totalPrice) {
+    public BigDecimal calculateDiscountAmount(long userId, long couponId, BigDecimal totalPrice) {
 
         UserCoupon coupon = couponQueryRepository
             .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)

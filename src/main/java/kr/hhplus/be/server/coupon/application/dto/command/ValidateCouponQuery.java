@@ -6,6 +6,7 @@ public record ValidateCouponQuery(
 
     Long userId,
     Long couponId,
+    BigDecimal discountAmount,
     BigDecimal totalPrice
 ) {
 
