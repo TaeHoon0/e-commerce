@@ -12,8 +12,10 @@ import kr.hhplus.be.server.order.domain.exception.OrderErrorCode;
 import kr.hhplus.be.server.order.domain.exception.OrderException;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
 import kr.hhplus.be.server.order.domain.order.entity.OrderItem;
+import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
 import kr.hhplus.be.server.order.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,11 +29,12 @@ public class OrderUseCase implements OrderPort {
     private final OrderPointPort orderPointPort;
     private final OrderProductPort orderProductPort;
 
+    private final ApplicationEventPublisher eventPublisher;
+
 
     /**
      * <h4>주문 생성</h4>
-     * 1. 쿠폰 검증<br/> 2. 포인트 검증<br/> 3. 재고 확인<br/>
-     * 4. 결제 준비 요청 <br/>5. 주문 준비 생성
+     * 1. 주문 생성 <br/> 2. 쿠폰 검증<br/> 3. 포인트 검증<br/> 4. 재고 확인<br/> 5. 주문 스냅샷, 아웃박스 생성
      */
     @Override
     @Transactional
@@ -68,6 +71,9 @@ public class OrderUseCase implements OrderPort {
         // 3. 재고 검증
         if (orderProductPort.validateProduct(command.productCommands()))
             throw new OrderException(OrderErrorCode.INVALID_PRODUCT_REQUEST);
+
+        // 4. 이벤트 생성 outbox, snapshot
+        eventPublisher.publishEvent(OrderCreatedEvent.of(order));
 
         return null;
     }

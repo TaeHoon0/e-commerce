@@ -1,20 +1,29 @@
 package kr.hhplus.be.server.order.presentation.mapper;
 
+import java.util.List;
+import java.util.Optional;
 import kr.hhplus.be.server.order.application.dto.command.CouponCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
+import kr.hhplus.be.server.order.application.dto.command.PointCommand;
+import kr.hhplus.be.server.order.application.dto.command.ProductCommand;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
 
 public class OrderRequestMapper {
 
-    public static CreateOrderCommand toCreateCommand(CreateOrderRequest request) {
+    public static CreateOrderCommand toCreateCommand(
+        long userId, String idempotencyKey, CreateOrderRequest request
+    ) {
 
-        if (request.coupon() != null) {
-            CouponCommand couponCommand = CouponRequestMapper.toCommand(request.coupon());
-        }
+        CouponCommand couponCommand = Optional.ofNullable(request.coupon())
+            .map(CouponRequestMapper::toCommand)
+            .orElse(null);
 
-        if (request.)
+        PointCommand pointCommand = Optional.ofNullable(request.point())
+            .map(PointRequestMapper::toCommand)
+            .orElse(null);
 
+        List<ProductCommand> productCommands = ProductRequestMapper.toCommands(request.items());
 
-        return
+        return new CreateOrderCommand(userId, idempotencyKey, couponCommand, pointCommand, productCommands);
     }
 }

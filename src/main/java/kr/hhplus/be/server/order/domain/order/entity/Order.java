@@ -61,11 +61,11 @@ public class Order extends BaseTimeEntity {
     private Refund refund;
 
 
-    public static Order create(
-        long userId, List<OrderItem> items
-    ) {
+    public static Order create(long userId, List<OrderItem> items) {
+
         return Order.builder()
             .userId(userId)
+            .status(OrderStatus.READY)
             .discountPrice(BigDecimal.ZERO)
             .totalPrice(BigDecimal.ZERO)
             .finalPrice(BigDecimal.ZERO)
@@ -74,6 +74,7 @@ public class Order extends BaseTimeEntity {
     }
 
     public void calculateTotalPrice() {
+
         this.totalPrice = items.stream()
             .map(orderItem ->
                 orderItem.getPrice().multiply(BigDecimal.valueOf(orderItem.getQuantity()))

@@ -3,6 +3,7 @@ package kr.hhplus.be.server.order.domain.order.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.order.domain.BaseTimeEntity;
 import kr.hhplus.be.server.order.domain.order.OrderStatus;
+import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -47,4 +48,17 @@ public class OrderSnapShot extends BaseTimeEntity {
     @JoinColumn(name = "tos_to_key", nullable = false)
     private Order order;
 
+
+    public static OrderSnapShot ofCreated(OrderCreatedEvent event, String snapshotJson) {
+
+        return OrderSnapShot.builder()
+            .beforeStatus(null)
+            .afterStatus(event.getOrder().getStatus())
+            .totalPrice(event.getOrder().getTotalPrice())
+            .discountPrice(event.getOrder().getDiscountPrice())
+            .finalPrice(event.getOrder().getFinalPrice())
+            .snapshotJson(snapshotJson)
+            .order(event.getOrder())
+            .build();
+    }
 }

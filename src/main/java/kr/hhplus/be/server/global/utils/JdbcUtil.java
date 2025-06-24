@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDateTime;
 
-public class JdbcUtils {
+public class JdbcUtil {
 
     public static void setNullableBigDecimal(PreparedStatement ps, int idx, BigDecimal value) throws SQLException {
         if (value != null) {

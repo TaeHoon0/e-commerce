@@ -4,8 +4,11 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
+import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
+import kr.hhplus.be.server.order.application.port.in.OrderPort;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.response.CreateOrderResponse;
+import kr.hhplus.be.server.order.presentation.mapper.OrderRequestMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/orders")
 public class OrderController {
 
+    private final OrderPort orderPort;
+
     /**
      * 주문 요청
      */
@@ -30,6 +35,11 @@ public class OrderController {
         @AuthenticationPrincipal CustomUserDetails user,
         @Valid CreateOrderRequest createOrderRequest
     ) {
+
+        CreateOrderCommand command = OrderRequestMapper.toCreateCommand(
+            user.getId(), idempotencyKey, createOrderRequest);
+
+        orderPort.createOrder(command);
 
 
         return null;
