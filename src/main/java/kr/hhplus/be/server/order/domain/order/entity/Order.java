@@ -28,6 +28,9 @@ public class Order extends BaseTimeEntity {
     @Column(name = "to_key", nullable = false)
     private Long id;
 
+    @Column(name = "to_idempotency_key", nullable = false, unique = true)
+    private String idempotencyKey;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "to_status", length = 10, nullable = false)
     private OrderStatus status;

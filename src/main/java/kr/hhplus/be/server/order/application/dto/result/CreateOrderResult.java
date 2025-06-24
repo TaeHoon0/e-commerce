@@ -7,6 +7,8 @@ public record CreateOrderResult(
 
     Long orderId,
     Long userId,
+    BigDecimal discountPrice,
+    BigDecimal finalPrice,
     BigDecimal totalPrice,
     OrderStatus status
 ) {

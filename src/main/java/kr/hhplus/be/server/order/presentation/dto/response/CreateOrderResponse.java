@@ -7,6 +7,8 @@ public record CreateOrderResponse (
 
     Long orderId,
     Long userId,
+    BigDecimal discountPrice,
+    BigDecimal finalPrice,
     BigDecimal totalPrice,
     OrderStatus status
 ){

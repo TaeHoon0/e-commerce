@@ -11,7 +11,7 @@ public class OrderCreatedEvent {
 
     private final Order order;
 
-    public static OrderCreatedEvent of(Order order) {
+    public static OrderCreatedEvent from(Order order) {
 
         return new OrderCreatedEvent(order);
     }

@@ -5,10 +5,12 @@ import jakarta.validation.constraints.NotBlank;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
+import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.application.port.in.OrderPort;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.response.CreateOrderResponse;
 import kr.hhplus.be.server.order.presentation.mapper.OrderRequestMapper;
+import kr.hhplus.be.server.order.presentation.mapper.OrderResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -27,7 +29,8 @@ public class OrderController {
     private final OrderPort orderPort;
 
     /**
-     * 주문 요청
+     * 주문 생성
+     * @param idempotencyKey        주문 멱등키
      */
     @PostMapping("")
     public ResponseEntity<ApiResult<CreateOrderResponse>> createOrder(
@@ -39,9 +42,11 @@ public class OrderController {
         CreateOrderCommand command = OrderRequestMapper.toCreateCommand(
             user.getId(), idempotencyKey, createOrderRequest);
 
-        orderPort.createOrder(command);
+        CreateOrderResult result = orderPort.createOrder(command);
 
-
-        return null;
+        return ResponseEntity.ok(
+            ApiResult.ok(OrderResponseMapper.toResponse(result))
+        );
     }
+
 }
