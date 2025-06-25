@@ -4,7 +4,7 @@ import kr.hhplus.be.server.order.domain.payment.entity.Payment;
 
 public interface PaymentStrategy {
 
-    PaymentMethod getPaymentMethod();
+    PG getPaymentMethod();
 
     Payment ready(Payment payment);
 

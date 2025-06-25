@@ -7,14 +7,14 @@ import java.util.stream.Collectors;
 import kr.hhplus.be.server.order.application.provider.PaymentProvider;
 import kr.hhplus.be.server.order.domain.exception.OrderErrorCode;
 import kr.hhplus.be.server.order.domain.exception.OrderException;
-import kr.hhplus.be.server.order.domain.payment.PaymentMethod;
+import kr.hhplus.be.server.order.domain.payment.PG;
 import kr.hhplus.be.server.order.domain.payment.PaymentStrategy;
 import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentProviderImpl implements PaymentProvider {
 
-    private final Map<PaymentMethod, PaymentStrategy> strategyMap;
+    private final Map<PG, PaymentStrategy> strategyMap;
 
     /**
      * Bean에 등록된 모듈 들고와서, method 에 맞게 매핑
@@ -28,9 +28,9 @@ public class PaymentProviderImpl implements PaymentProvider {
     }
 
     @Override
-    public PaymentStrategy getPaymentStrategy(PaymentMethod method) {
+    public PaymentStrategy getPaymentStrategy(PG pg) {
 
-        return Optional.ofNullable(strategyMap.get(method))
+        return Optional.ofNullable(strategyMap.get(pg))
             .orElseThrow(() -> new OrderException(OrderErrorCode.PAYMENT_METHOD_NOT_SUPPORTED));
     }
 }

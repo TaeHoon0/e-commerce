@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.order.infrastructure.payment;
 
-import kr.hhplus.be.server.order.domain.payment.PaymentMethod;
+import kr.hhplus.be.server.order.domain.payment.PG;
 import kr.hhplus.be.server.order.domain.payment.PaymentStrategy;
 import kr.hhplus.be.server.order.domain.payment.entity.Payment;
 import org.springframework.stereotype.Component;
@@ -10,8 +10,8 @@ public class TossPayment implements PaymentStrategy {
 
 
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.TOSS;
+    public PG getPaymentMethod() {
+        return PG.TOSS_PAY;
     }
 
     @Override

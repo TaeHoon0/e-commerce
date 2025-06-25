@@ -7,4 +7,6 @@ import java.util.Optional;
 public interface OrderQueryRepository {
 
     Optional<Order> findByIdempotencyKey(String idempotencyKey);
+
+    Optional<Order> findById(long id);
 }

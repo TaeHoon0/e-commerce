@@ -26,4 +26,10 @@ public class OrderRepositoryImpl implements OrderCommandRepository, OrderQueryRe
 
         return orderJpaRepository.findByIdempotencyKey(idempotencyKey);
     }
+
+    @Override
+    public Optional<Order> findById(long orderId) {
+
+        return orderJpaRepository.findById(orderId);
+    }
 }

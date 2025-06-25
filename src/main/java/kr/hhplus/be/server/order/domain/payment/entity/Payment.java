@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 
 import kr.hhplus.be.server.order.domain.BaseTimeEntity;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
+import kr.hhplus.be.server.order.domain.payment.PG;
 import kr.hhplus.be.server.order.domain.payment.PaymentMethod;
 import kr.hhplus.be.server.order.domain.payment.PaymentStatus;
 import lombok.AccessLevel;
@@ -53,6 +54,10 @@ public class Payment extends BaseTimeEntity {
     private PaymentStatus status;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "tp_pg", nullable = false)
+    private PG pg;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "tp_method", nullable = false)
     private PaymentMethod method;
 
@@ -65,4 +70,20 @@ public class Payment extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "tp_to_key")
     private Order order;
+
+
+    public static Payment create(
+        long userId, PG pg, PaymentMethod method, Order order
+    ) {
+
+        return Payment.builder()
+            .userId(userId)
+            .pg(pg)
+            .method(method)
+            .status(PaymentStatus.READY)
+            .totalPrice(order.getTotalPrice())
+            .finalPrice(order.getFinalPrice())
+            .order(order)
+            .build();
+    }
 }

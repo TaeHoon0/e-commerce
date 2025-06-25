@@ -23,7 +23,7 @@ public class CouponPolicy {
         if (coupon.getExpireDate() != null && coupon.getExpireDate().isAfter(LocalDateTime.now()))
             throw new CouponException(CouponErrorCode.INVALID_COUPON_EXPIRE_DATE);
 
-        if (coupon.getDiscountAmount().compareTo(discountAmount) > 0)
+        if (coupon.getDiscountAmount().compareTo(discountAmount) != 0)
             throw new CouponException(CouponErrorCode.INVALID_COUPON_AMOUNT);
     }
 

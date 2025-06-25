@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.order.infrastructure.payment;
 
-import kr.hhplus.be.server.order.domain.payment.PaymentMethod;
+import kr.hhplus.be.server.order.domain.payment.PG;
 import kr.hhplus.be.server.order.domain.payment.PaymentStrategy;
 import kr.hhplus.be.server.order.domain.payment.entity.Payment;
 import org.springframework.stereotype.Component;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 public class KakaoPayment implements PaymentStrategy {
 
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.KAKAO_PAY;
+    public PG getPaymentMethod() {
+        return PG.KAKAO_PAY;
     }
 
     @Override
