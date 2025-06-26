@@ -2,10 +2,12 @@ package kr.hhplus.be.server.order.presentation.mapper;
 
 import java.util.List;
 import java.util.Optional;
+import kr.hhplus.be.server.order.application.dto.command.ApproveOrderCommand;
 import kr.hhplus.be.server.order.application.dto.command.CouponCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
 import kr.hhplus.be.server.order.application.dto.command.PointCommand;
 import kr.hhplus.be.server.order.application.dto.command.ProductCommand;
+import kr.hhplus.be.server.order.presentation.dto.request.ApproveOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
 
 public class OrderRequestMapper {
@@ -25,5 +27,16 @@ public class OrderRequestMapper {
         List<ProductCommand> productCommands = ProductRequestMapper.toCommands(request.items());
 
         return new CreateOrderCommand(userId, idempotencyKey, couponCommand, pointCommand, productCommands);
+    }
+
+    public static ApproveOrderCommand toCommand(
+        long userId, ApproveOrderRequest request
+    ) {
+
+        return new ApproveOrderCommand(
+            userId,
+            request.orderId(),
+            request.tid()
+        );
     }
 }

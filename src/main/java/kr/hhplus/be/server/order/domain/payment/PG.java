@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.order.domain.payment;
 
 public enum PG {
-    KAKAO_PAY,
+    INICIS,
     POINT,
     TOSS_PAY
 }

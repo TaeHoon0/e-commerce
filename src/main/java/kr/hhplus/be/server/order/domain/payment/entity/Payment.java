@@ -80,10 +80,16 @@ public class Payment extends BaseTimeEntity {
             .userId(userId)
             .pg(pg)
             .method(method)
-            .status(PaymentStatus.READY)
+            .status(PaymentStatus.CREATED)
             .totalPrice(order.getTotalPrice())
             .finalPrice(order.getFinalPrice())
             .order(order)
             .build();
+    }
+
+    public void completeReady(String tid) {
+
+        this.tid = tid;
+        this.status = PaymentStatus.READY;
     }
 }

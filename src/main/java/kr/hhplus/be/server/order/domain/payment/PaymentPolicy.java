@@ -20,7 +20,4 @@ public class PaymentPolicy {
         if(finalPrice.compareTo(order.getFinalPrice()) != 0)
             throw new OrderException(OrderErrorCode.PAYMENT_PRICE_NOT_MATCHED);
     }
-
-    public void validatePG(PG pg)
-
 }

@@ -4,10 +4,12 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+import kr.hhplus.be.server.order.application.dto.command.ApproveOrderCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.application.mapper.OrderResultMapper;
 import kr.hhplus.be.server.order.application.port.in.OrderPort;
+import kr.hhplus.be.server.order.application.port.in.PaymentPort;
 import kr.hhplus.be.server.order.application.port.out.OrderCouponPort;
 import kr.hhplus.be.server.order.application.port.out.OrderPointPort;
 import kr.hhplus.be.server.order.application.port.out.OrderProductPort;
@@ -32,6 +34,7 @@ public class OrderUseCase implements OrderPort {
     private final OrderCouponPort orderCouponPort;
     private final OrderPointPort orderPointPort;
     private final OrderProductPort orderProductPort;
+    private final PaymentPort paymentPort;
 
     private final OrderQueryRepository orderQueryRepository;
 
@@ -89,5 +92,19 @@ public class OrderUseCase implements OrderPort {
         eventPublisher.publishEvent(OrderCreatedEvent.from(order));
 
         return OrderResultMapper.toResult(order);
+    }
+
+    /**
+     * 주문 승인
+     */
+    public ApproveOrderResult approveOrder(
+        ApproveOrderCommand command
+    ) {
+
+        Order order = orderService.get(command.orderId());
+
+        orderService.validateApprove(order);
+
+        paymentPort.approve(command.userId(), command.orderId(), command.tid());
     }
 }

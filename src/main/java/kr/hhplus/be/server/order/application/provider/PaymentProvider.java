@@ -8,5 +8,5 @@ public interface PaymentProvider {
     /**
      * 결제 타입에 맞는 payments 가져오기
      */
-    PaymentStrategy getPaymentStrategy(PG method);
+    PaymentStrategy getPaymentStrategy(PG pg);
 }

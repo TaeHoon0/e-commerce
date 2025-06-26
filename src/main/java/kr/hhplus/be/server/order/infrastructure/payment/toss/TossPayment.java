@@ -1,4 +1,4 @@
-package kr.hhplus.be.server.order.infrastructure.payment;
+package kr.hhplus.be.server.order.infrastructure.payment.toss;
 
 import kr.hhplus.be.server.order.domain.payment.PG;
 import kr.hhplus.be.server.order.domain.payment.PaymentStrategy;

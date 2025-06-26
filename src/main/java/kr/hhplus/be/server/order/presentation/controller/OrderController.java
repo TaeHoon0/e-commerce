@@ -4,9 +4,9 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
-import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.application.port.in.OrderPort;
+import kr.hhplus.be.server.order.presentation.dto.request.ApproveOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.response.CreateOrderResponse;
 import kr.hhplus.be.server.order.presentation.mapper.OrderRequestMapper;
@@ -26,27 +26,33 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/orders")
 public class OrderController {
 
-    private final OrderPort orderPort;
+    private final OrderPort port;
 
     /**
      * 주문 생성
      * @param idempotencyKey        주문 멱등키
      */
     @PostMapping("")
-    public ResponseEntity<ApiResult<CreateOrderResponse>> createOrder(
+    public ResponseEntity<ApiResult<CreateOrderResponse>> create(
         @NotBlank @RequestHeader("Idempotency-Key") String idempotencyKey,
         @AuthenticationPrincipal CustomUserDetails user,
-        @Valid CreateOrderRequest createOrderRequest
+        @Valid CreateOrderRequest request
     ) {
 
-        CreateOrderCommand command = OrderRequestMapper.toCreateCommand(
-            user.getId(), idempotencyKey, createOrderRequest);
-
-        CreateOrderResult result = orderPort.createOrder(command);
+        CreateOrderResult result = port.createOrder(
+            OrderRequestMapper.toCreateCommand(user.getId(), idempotencyKey, request));
 
         return ResponseEntity.ok(
             ApiResult.ok(OrderResponseMapper.toResponse(result))
         );
     }
 
+    @PostMapping("/approve")
+    public ResponseEntity<ApiResult<>> approve(
+        @AuthenticationPrincipal CustomUserDetails user,
+        @Valid ApproveOrderRequest request
+    ) {
+
+
+    }
 }
