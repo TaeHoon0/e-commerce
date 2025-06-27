@@ -87,9 +87,29 @@ public class Payment extends BaseTimeEntity {
             .build();
     }
 
-    public void completeReady(String tid) {
+    public void ready(String tid) {
 
         this.tid = tid;
         this.status = PaymentStatus.READY;
+    }
+
+    public void approve() {
+
+        this.status = PaymentStatus.APPROVED;
+    }
+
+    public void fail() {
+
+        this.status = PaymentStatus.FAIL;
+    }
+
+    public boolean isReady() {
+
+        return PaymentStatus.READY.equals(this.status);
+    }
+
+    public boolean isNotReady() {
+
+        return !isReady();
     }
 }

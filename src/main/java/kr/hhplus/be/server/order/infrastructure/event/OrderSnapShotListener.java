@@ -3,7 +3,7 @@ package kr.hhplus.be.server.order.infrastructure.event;
 import kr.hhplus.be.server.global.utils.JsonUtil;
 import kr.hhplus.be.server.order.domain.order.entity.OrderSnapShot;
 import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
-import kr.hhplus.be.server.order.domain.repository.OrderSnapShotCommandRepository;
+import kr.hhplus.be.server.order.domain.repository.order.OrderSnapShotCommandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;

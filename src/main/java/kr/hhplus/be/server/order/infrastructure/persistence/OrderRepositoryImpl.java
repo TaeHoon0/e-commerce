@@ -1,8 +1,8 @@
 package kr.hhplus.be.server.order.infrastructure.persistence;
 
 import kr.hhplus.be.server.order.domain.order.entity.Order;
-import kr.hhplus.be.server.order.domain.repository.OrderCommandRepository;
-import kr.hhplus.be.server.order.domain.repository.OrderQueryRepository;
+import kr.hhplus.be.server.order.domain.repository.order.OrderCommandRepository;
+import kr.hhplus.be.server.order.domain.repository.order.OrderQueryRepository;
 import kr.hhplus.be.server.order.infrastructure.persistence.jpa.OrderJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

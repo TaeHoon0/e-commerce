@@ -1,7 +1,7 @@
 package kr.hhplus.be.server.order.infrastructure.persistence;
 
 import kr.hhplus.be.server.order.domain.order.entity.OrderSnapShot;
-import kr.hhplus.be.server.order.domain.repository.OrderSnapShotCommandRepository;
+import kr.hhplus.be.server.order.domain.repository.order.OrderSnapShotCommandRepository;
 import kr.hhplus.be.server.order.infrastructure.persistence.jpa.OrderSnapShotJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

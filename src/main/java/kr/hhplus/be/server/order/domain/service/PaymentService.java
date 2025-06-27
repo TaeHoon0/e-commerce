@@ -12,9 +12,20 @@ public class PaymentService {
 
     private final PaymentPolicy paymentPolicy;
 
-    public void validatePayment(Order order, long userId, BigDecimal finalPrice) {
+    public void validateCreatePayment(
+        Order order, long userId, BigDecimal finalPrice
+    ) {
 
         paymentPolicy.validateUserId(order, userId);
         paymentPolicy.validatePrice(order, finalPrice);
+    }
+
+    public void validateApprovePayment(
+        Order order, long userId, String tid
+    ) {
+
+        paymentPolicy.validateUserId(order, userId);
+        paymentPolicy.validateApproveStatus(order.getPayment());
+        paymentPolicy.validateTid(order.getPayment(), tid);
     }
 }

@@ -1,12 +1,14 @@
 package kr.hhplus.be.server.order.presentation.mapper;
 
+import kr.hhplus.be.server.order.application.dto.command.ApprovePaymentCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreatePaymentCommand;
 import kr.hhplus.be.server.order.application.dto.command.PaymentCommand;
+import kr.hhplus.be.server.order.presentation.dto.request.ApprovePaymentRequest;
 import kr.hhplus.be.server.order.presentation.dto.request.CreatePaymentRequest;
 
 public class PaymentRequestMapper {
 
-    public static CreatePaymentCommand toCommand(
+    public static CreatePaymentCommand toCreateCommand(
         long userId, CreatePaymentRequest request
     ) {
 
@@ -18,6 +20,17 @@ public class PaymentRequestMapper {
                 .method(request.payment().paymentMethod())
                 .finalPrice(request.payment().finalPrice())
                 .build()
+        );
+    }
+
+    public static ApprovePaymentCommand toApproveCommand(
+        long userId, ApprovePaymentRequest request
+    ) {
+
+        return new ApprovePaymentCommand(
+            userId,
+            request.orderId(),
+            request.payment().tid()
         );
     }
 }

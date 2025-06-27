@@ -18,7 +18,7 @@ import kr.hhplus.be.server.order.domain.exception.OrderException;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
 import kr.hhplus.be.server.order.domain.order.entity.OrderItem;
 import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
-import kr.hhplus.be.server.order.domain.repository.OrderQueryRepository;
+import kr.hhplus.be.server.order.domain.repository.order.OrderQueryRepository;
 import kr.hhplus.be.server.order.domain.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
@@ -97,14 +97,15 @@ public class OrderUseCase implements OrderPort {
     /**
      * 주문 승인
      */
+    @Transactional
     public ApproveOrderResult approveOrder(
         ApproveOrderCommand command
     ) {
 
         Order order = orderService.get(command.orderId());
 
-        orderService.validateApprove(order);
+        orderService.validateApprove(order, command.userId());
 
-        paymentPort.approve(command.userId(), command.orderId(), command.tid());
+
     }
 }

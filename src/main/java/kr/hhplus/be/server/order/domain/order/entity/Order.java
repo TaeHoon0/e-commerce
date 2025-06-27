@@ -100,4 +100,14 @@ public class Order extends BaseTimeEntity {
         this.discountPrice = this.discountPrice.add(point);
         this.finalPrice = this.finalPrice.subtract(point);
     }
+
+    public boolean isReady() {
+
+        return OrderStatus.READY.equals(this.status);
+    }
+
+    public boolean isNotReady() {
+
+        return !isReady();
+    }
 }
