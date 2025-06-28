@@ -32,7 +32,7 @@ public enum CouponErrorCode {
     INVALID_COUPON_AMOUNT(HttpStatus.BAD_REQUEST, "4002010", "유효하지 않은 쿠폰 할인 금액입니다."),
     INVALID_COUPON_MINIMUM_PRICE(HttpStatus.BAD_REQUEST, "4002011", "유효하지 않은 최소 사용 금액입니다."),
     INVALID_COUPON_EXPIRE_DATE(HttpStatus.BAD_REQUEST, "4002012", "유효하지 않은 쿠폰 만료 일자입니다."),
-
+    INVALID_COUPON_TYPE(HttpStatus.BAD_REQUEST, "4002013", "유효하지 않은 쿠폰 타입입니다."),
     // 내부 오류
     INTERNAL_COUPON_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "5002999", "쿠폰 처리 중 알 수 없는 오류가 발생했습니다.");
 

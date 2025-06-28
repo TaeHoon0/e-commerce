@@ -1,8 +1,11 @@
 package kr.hhplus.be.server.coupon.application.usecase;
 
-import kr.hhplus.be.server.coupon.application.dto.request.IssueCouponCommand;
-import kr.hhplus.be.server.coupon.application.dto.request.UseCouponCommand;
-import kr.hhplus.be.server.coupon.application.dto.response.CouponResult;
+import java.math.BigDecimal;
+import kr.hhplus.be.server.coupon.application.dto.command.CalculateCouponQuery;
+import kr.hhplus.be.server.coupon.application.dto.command.IssueCouponCommand;
+import kr.hhplus.be.server.coupon.application.dto.command.UseCouponCommand;
+import kr.hhplus.be.server.coupon.application.dto.command.ValidateCouponQuery;
+import kr.hhplus.be.server.coupon.application.dto.result.CouponResult;
 import kr.hhplus.be.server.coupon.application.mapper.CouponResultMapper;
 import kr.hhplus.be.server.coupon.application.port.in.CouponPort;
 import kr.hhplus.be.server.coupon.domain.entity.CouponTemplate;
@@ -52,5 +55,19 @@ public class CouponUseCase implements CouponPort {
         couponHistoryCommandRepository.save(UserCouponHistory.createUseHistory(coupon.getUserId(), coupon.getOrderId(), coupon));
 
         return CouponResultMapper.toResult(coupon);
+    }
+
+    @Override
+    public boolean validateCoupon(ValidateCouponQuery query) {
+
+        couponService.validateCoupon(query.userId(), query.couponId(), query.discountAmount(), query.totalPrice());
+
+        return true;
+    }
+
+    @Override
+    public BigDecimal calculateDiscountAmount(CalculateCouponQuery query) {
+
+        return couponService.calculateDiscountAmount(query.userId(), query.couponId(), query.totalPrice());
     }
 }

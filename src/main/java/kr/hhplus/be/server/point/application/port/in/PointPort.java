@@ -1,9 +1,10 @@
 package kr.hhplus.be.server.point.application.port.in;
 
-import kr.hhplus.be.server.point.application.dto.request.ChargePointCommand;
-import kr.hhplus.be.server.point.application.dto.request.UsePointCommand;
-import kr.hhplus.be.server.point.application.dto.response.PointHistoryResult;
-import kr.hhplus.be.server.point.application.dto.response.PointResult;
+import java.math.BigDecimal;
+import kr.hhplus.be.server.point.application.dto.command.ChargePointCommand;
+import kr.hhplus.be.server.point.application.dto.command.UsePointCommand;
+import kr.hhplus.be.server.point.application.dto.result.PointHistoryResult;
+import kr.hhplus.be.server.point.application.dto.result.PointResult;
 
 import java.util.List;
 
@@ -28,4 +29,9 @@ public interface PointPort {
      * 포인트 이력 조회
      */
     List<PointHistoryResult> getPointHistories(Long userId);
+
+    /**
+     * 포인트 검증
+     */
+    boolean validatePoint(Long userId, BigDecimal amount);
 }

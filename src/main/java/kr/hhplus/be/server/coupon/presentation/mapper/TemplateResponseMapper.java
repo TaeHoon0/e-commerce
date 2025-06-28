@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.coupon.presentation.mapper;
 
-import kr.hhplus.be.server.coupon.application.dto.response.TemplateResult;
+import kr.hhplus.be.server.coupon.application.dto.result.TemplateResult;
 import kr.hhplus.be.server.coupon.presentation.dto.reseponse.CreateTemplateResponse;
 
 public class TemplateResponseMapper {

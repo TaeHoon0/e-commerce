@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.coupon.domain.service;
 
 import jakarta.persistence.LockTimeoutException;
+import java.util.Optional;
+import kr.hhplus.be.server.coupon.domain.CouponStatus;
 import kr.hhplus.be.server.coupon.domain.entity.UserCoupon;
 import kr.hhplus.be.server.coupon.domain.exception.CouponErrorCode;
 import kr.hhplus.be.server.coupon.domain.exception.CouponException;
@@ -16,6 +18,7 @@ import java.math.BigDecimal;
 public class CouponService {
 
     private final CouponQueryRepository couponQueryRepository;
+    private final CouponPolicy couponPolicy;
 
     public UserCoupon issueCoupon(long userId, long templateId) {
 
@@ -60,6 +63,25 @@ public class CouponService {
 
             throw new CouponException(CouponErrorCode.LOCK_ACQUISITION_FAILED);
         }
+    }
 
+    public void validateCoupon(
+        long userId, long couponId, BigDecimal discountAmount, BigDecimal totalPrice
+    ) {
+
+        UserCoupon coupon = couponQueryRepository
+            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)
+            .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
+
+        couponPolicy.validate(coupon, discountAmount, totalPrice);
+    }
+
+    public BigDecimal calculateDiscountAmount(long userId, long couponId, BigDecimal totalPrice) {
+
+        UserCoupon coupon = couponQueryRepository
+            .findByCouponIdAndUserIdAndStatus(couponId, userId, CouponStatus.AVAILABLE)
+            .orElseThrow(() -> new CouponException(CouponErrorCode.COUPON_NOT_FOUND));
+
+        return couponPolicy.calculate(coupon, totalPrice);
     }
 }

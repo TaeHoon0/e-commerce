@@ -17,5 +17,6 @@ public class ProductOptionService {
 
         List<ProductOption> options = productOptionQueryRepository.findByOptionIdsWithLock(optionIds);
 
+        return options;
     }
 }

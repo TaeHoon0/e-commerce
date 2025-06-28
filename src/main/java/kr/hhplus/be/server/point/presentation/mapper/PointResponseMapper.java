@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.point.presentation.mapper;
 
-import kr.hhplus.be.server.point.application.dto.response.PointResult;
+import kr.hhplus.be.server.point.application.dto.result.PointResult;
 import kr.hhplus.be.server.point.presentation.dto.response.PointResponse;
 
 public class PointResponseMapper {

@@ -1,6 +1,6 @@
 package kr.hhplus.be.server.coupon.presentation.mapper;
 
-import kr.hhplus.be.server.coupon.application.dto.request.CreateTemplateCommand;
+import kr.hhplus.be.server.coupon.application.dto.command.CreateTemplateCommand;
 import kr.hhplus.be.server.coupon.presentation.dto.request.TemplateRequest;
 
 public class TemplateRequestMapper {
@@ -12,7 +12,8 @@ public class TemplateRequestMapper {
             request.totalCount(),
             request.discountAmount(),
             request.minimumPrice(),
-            request.expireDate()
+            request.expireDate(),
+            request.type()
         );
     }
 }

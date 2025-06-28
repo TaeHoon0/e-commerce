@@ -60,6 +60,11 @@ dependencies {
 	// java.lang.NoClassDefFoundError(jakarta.persistence.Entity) 발생 대응
 	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
 
+	// Retryable
+	implementation("org.springframework.retry:spring-retry")
+
+	// AOP
+	implementation ("org.springframework.boot:spring-boot-starter-aop")
 
 	// DB
 	runtimeOnly("com.mysql:mysql-connector-j")
