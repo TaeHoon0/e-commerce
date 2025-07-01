@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import kr.hhplus.be.server.order.application.dto.command.ApproveOrderCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
+import kr.hhplus.be.server.order.application.dto.result.ApproveOrderResult;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.application.mapper.OrderResultMapper;
 import kr.hhplus.be.server.order.application.port.in.OrderPort;
@@ -17,6 +18,7 @@ import kr.hhplus.be.server.order.domain.exception.OrderErrorCode;
 import kr.hhplus.be.server.order.domain.exception.OrderException;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
 import kr.hhplus.be.server.order.domain.order.entity.OrderItem;
+import kr.hhplus.be.server.order.domain.order.event.OrderApprovedEvent;
 import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
 import kr.hhplus.be.server.order.domain.repository.order.OrderQueryRepository;
 import kr.hhplus.be.server.order.domain.service.OrderService;
@@ -54,7 +56,7 @@ public class OrderUseCase implements OrderPort {
         Optional<Order> existing = orderQueryRepository.findByIdempotencyKey(command.idempotencyKey());
 
         if (existing.isPresent()) {
-            return OrderResultMapper.toResult(existing.get());
+            return OrderResultMapper.toCreateResult(existing.get());
         }
 
         // 2. 주문 생성
@@ -91,21 +93,23 @@ public class OrderUseCase implements OrderPort {
         // 6. 이벤트 생성 outbox, snapshot
         eventPublisher.publishEvent(OrderCreatedEvent.from(order));
 
-        return OrderResultMapper.toResult(order);
+        return OrderResultMapper.toCreateResult(order);
     }
 
     /**
      * 주문 승인
      */
     @Transactional
-    public ApproveOrderResult approveOrder(
-        ApproveOrderCommand command
-    ) {
+    public ApproveOrderResult approveOrder(ApproveOrderCommand command) {
 
         Order order = orderService.get(command.orderId());
 
         orderService.validateApprove(order, command.userId());
 
+        order.approve();
 
+        eventPublisher.publishEvent(OrderApprovedEvent.from(order));
+
+        return OrderResultMapper.toApproveResult(order);
     }
 }

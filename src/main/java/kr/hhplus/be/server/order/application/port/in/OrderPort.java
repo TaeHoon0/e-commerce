@@ -2,6 +2,7 @@ package kr.hhplus.be.server.order.application.port.in;
 
 import kr.hhplus.be.server.order.application.dto.command.ApproveOrderCommand;
 import kr.hhplus.be.server.order.application.dto.command.CreateOrderCommand;
+import kr.hhplus.be.server.order.application.dto.result.ApproveOrderResult;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 
 public interface OrderPort {

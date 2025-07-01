@@ -4,10 +4,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import kr.hhplus.be.server.global.config.security.CustomUserDetails;
 import kr.hhplus.be.server.global.dto.ApiResult;
+import kr.hhplus.be.server.order.application.dto.result.ApproveOrderResult;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.application.port.in.OrderPort;
 import kr.hhplus.be.server.order.presentation.dto.request.ApproveOrderRequest;
 import kr.hhplus.be.server.order.presentation.dto.request.CreateOrderRequest;
+import kr.hhplus.be.server.order.presentation.dto.response.ApproveOrderResponse;
 import kr.hhplus.be.server.order.presentation.dto.response.CreateOrderResponse;
 import kr.hhplus.be.server.order.presentation.mapper.OrderRequestMapper;
 import kr.hhplus.be.server.order.presentation.mapper.OrderResponseMapper;
@@ -48,11 +50,16 @@ public class OrderController {
     }
 
     @PostMapping("/approve")
-    public ResponseEntity<ApiResult<>> approve(
+    public ResponseEntity<ApiResult<ApproveOrderResponse>> approve(
         @AuthenticationPrincipal CustomUserDetails user,
         @Valid ApproveOrderRequest request
     ) {
 
+        ApproveOrderResult result = port.approveOrder(
+            OrderRequestMapper.toApproveCommand(user.getId(), request));
 
+        return ResponseEntity.ok(
+            ApiResult.ok(OrderResponseMapper.toResponse(result))
+        );
     }
 }

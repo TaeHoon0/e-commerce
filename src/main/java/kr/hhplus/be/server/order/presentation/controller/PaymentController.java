@@ -8,6 +8,7 @@ import kr.hhplus.be.server.order.application.dto.result.CreatePaymentResult;
 import kr.hhplus.be.server.order.application.port.in.PaymentPort;
 import kr.hhplus.be.server.order.presentation.dto.request.ApprovePaymentRequest;
 import kr.hhplus.be.server.order.presentation.dto.request.CreatePaymentRequest;
+import kr.hhplus.be.server.order.presentation.dto.response.ApprovePaymentResponse;
 import kr.hhplus.be.server.order.presentation.dto.response.CreatePaymentResponse;
 import kr.hhplus.be.server.order.presentation.mapper.PaymentRequestMapper;
 import kr.hhplus.be.server.order.presentation.mapper.PaymentResponseMapper;
@@ -42,7 +43,7 @@ public class PaymentController {
     }
 
     @PostMapping("/approve")
-    public ResponseEntity<ApiResult<>> approve(
+    public ResponseEntity<ApiResult<ApprovePaymentResponse>> approve(
         @AuthenticationPrincipal CustomUserDetails user,
         @Valid @RequestBody ApprovePaymentRequest request
     ) {
@@ -50,7 +51,7 @@ public class PaymentController {
         ApprovePaymentResult result = port.approve(PaymentRequestMapper.toApproveCommand(user.getId(), request));
 
         return ResponseEntity.ok(
-            ApiResult.ok()
+            ApiResult.ok(PaymentResponseMapper.toResponse(result))
         );
     }
 }

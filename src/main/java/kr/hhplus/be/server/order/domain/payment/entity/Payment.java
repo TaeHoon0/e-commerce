@@ -112,4 +112,14 @@ public class Payment extends BaseTimeEntity {
 
         return !isReady();
     }
+
+    public boolean isApproved() {
+
+        return PaymentStatus.APPROVED.equals(this.status);
+    }
+
+    public boolean isNotApproved() {
+
+        return !isApproved();
+    }
 }

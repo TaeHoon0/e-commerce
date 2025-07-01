@@ -4,7 +4,9 @@ import kr.hhplus.be.server.product.domain.entity.ProductOption;
 import kr.hhplus.be.server.product.domain.repository.ProductOptionQueryRepository;
 
 import java.util.List;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public class ProductOptionRepositoryImpl implements ProductOptionQueryRepository {
 
     @Override

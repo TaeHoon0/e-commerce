@@ -1,7 +1,9 @@
 package kr.hhplus.be.server.order.presentation.mapper;
 
+import kr.hhplus.be.server.order.application.dto.result.ApprovePaymentResult;
 import kr.hhplus.be.server.order.application.dto.result.CreatePaymentResult;
 import kr.hhplus.be.server.order.presentation.dto.PaymentDto;
+import kr.hhplus.be.server.order.presentation.dto.response.ApprovePaymentResponse;
 import kr.hhplus.be.server.order.presentation.dto.response.CreatePaymentResponse;
 
 public class PaymentResponseMapper {
@@ -19,5 +21,8 @@ public class PaymentResponseMapper {
         );
     }
 
-    public static 
+    public static ApprovePaymentResponse toResponse(ApprovePaymentResult result) {
+
+        return new ApprovePaymentResponse(result.orderId());
+    }
 }

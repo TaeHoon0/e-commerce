@@ -1,11 +1,12 @@
 package kr.hhplus.be.server.order.application.mapper;
 
+import kr.hhplus.be.server.order.application.dto.result.ApproveOrderResult;
 import kr.hhplus.be.server.order.application.dto.result.CreateOrderResult;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
 
 public class OrderResultMapper {
 
-    public static CreateOrderResult toResult(Order order) {
+    public static CreateOrderResult toCreateResult(Order order) {
 
         return new CreateOrderResult(
             order.getId(),
@@ -14,6 +15,16 @@ public class OrderResultMapper {
             order.getFinalPrice(),
             order.getTotalPrice(),
             order.getStatus()
+        );
+    }
+
+    public static ApproveOrderResult toApproveResult(Order order) {
+
+        return new ApproveOrderResult(
+            order.getId(),
+            order.getTotalPrice(),
+            order.getDiscountPrice(),
+            order.getFinalPrice()
         );
     }
 }

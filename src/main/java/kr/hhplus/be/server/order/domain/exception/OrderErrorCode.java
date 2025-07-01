@@ -23,6 +23,7 @@ public enum OrderErrorCode {
     PAYMENT_USER_NOT_MATCHED      (HttpStatus.BAD_REQUEST,          "4001012", "유효하지 않은 결제 사용자입니다."),
     PAYMENT_PRICE_NOT_MATCHED     (HttpStatus.BAD_REQUEST,          "4001013", "유효하지 않은 결제 금액입니다.."),
     PAYMENT_TID_NOT_MATCHED       (HttpStatus.BAD_REQUEST,          "4001014", "유효하지 않은 결제 번호입니다."),
+    PAYMENT_NOT_APPROVED          (HttpStatus.BAD_REQUEST,          "4001015", "결제가 승인되지 않았습니다."),
     PAYMENT_NOT_FOUND             (HttpStatus.NOT_FOUND,            "4043001", "결제 정보를 찾을 수 없습니다."),
     PAYMENT_METHOD_NOT_SUPPORTED  (HttpStatus.BAD_REQUEST,          "4003002", "지원하지 않는 결제 수단입니다."),
     PAYMENT_INSUFFICIENT_FUNDS    (HttpStatus.BAD_REQUEST,          "4003003", "결제 금액이 부족합니다."),

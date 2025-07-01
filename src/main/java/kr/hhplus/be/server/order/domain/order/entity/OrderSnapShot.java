@@ -49,16 +49,29 @@ public class OrderSnapShot extends BaseTimeEntity {
     private Order order;
 
 
-    public static OrderSnapShot ofCreated(OrderCreatedEvent event, String snapshotJson) {
+    public static OrderSnapShot ofCreated(Order order, String snapshotJson) {
 
         return OrderSnapShot.builder()
             .beforeStatus(null)
-            .afterStatus(event.getOrder().getStatus())
-            .totalPrice(event.getOrder().getTotalPrice())
-            .discountPrice(event.getOrder().getDiscountPrice())
-            .finalPrice(event.getOrder().getFinalPrice())
+            .afterStatus(order.getStatus())
+            .totalPrice(order.getTotalPrice())
+            .discountPrice(order.getDiscountPrice())
+            .finalPrice(order.getFinalPrice())
             .snapshotJson(snapshotJson)
-            .order(event.getOrder())
+            .order(order)
+            .build();
+    }
+
+    public static OrderSnapShot ofApproved(Order order, String snapshotJson) {
+
+        return OrderSnapShot.builder()
+            .beforeStatus(OrderStatus.READY)
+            .afterStatus(order.getStatus())
+            .totalPrice(order.getTotalPrice())
+            .discountPrice(order.getDiscountPrice())
+            .finalPrice(order.getFinalPrice())
+            .snapshotJson(snapshotJson)
+            .order(order)
             .build();
     }
 }

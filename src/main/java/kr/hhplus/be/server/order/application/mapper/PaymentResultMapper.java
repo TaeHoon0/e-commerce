@@ -23,8 +23,7 @@ public class PaymentResultMapper {
     public static ApprovePaymentResult toApproveResult(Payment payment) {
 
         return new ApprovePaymentResult(
-            payment.getOrder().getId(),
-            payment.getStatus()
+            payment.getOrder().getId()
         );
     }
 }

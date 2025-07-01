@@ -3,6 +3,7 @@ package kr.hhplus.be.server.order.infrastructure.outbox;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.order.domain.order.OrderStatus;
 import kr.hhplus.be.server.order.domain.order.entity.Order;
+import kr.hhplus.be.server.order.domain.order.event.OrderApprovedEvent;
 import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -48,6 +49,16 @@ public class OrderOutbox {
 
 
     public static OrderOutbox ofCreated(OrderCreatedEvent event, String payload) {
+
+        return OrderOutbox.builder()
+            .orderId(event.getOrder().getId())
+            .orderStatus(event.getOrder().getStatus())
+            .outboxStatus(OutboxStatus.PENDING)
+            .payload(payload)
+            .build();
+    }
+
+    public static OrderOutbox ofApproved(OrderApprovedEvent event, String payload) {
 
         return OrderOutbox.builder()
             .orderId(event.getOrder().getId())

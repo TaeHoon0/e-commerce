@@ -14,4 +14,9 @@ public interface OrderCouponPort {
      * 쿠폰 할인 금액 계산
      */
     BigDecimal calculateDiscountAmount(Long userId, Long couponId, BigDecimal totalPrice);
+
+    /**
+     * 쿠폰 사용
+     */
+    void useCoupon(Long couponId, Long orderId, BigDecimal totalPrice);
 }

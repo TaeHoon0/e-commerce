@@ -51,7 +51,7 @@ public class Order extends BaseTimeEntity {
     private Long couponId;
 
     @Setter
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.PERSIST, orphanRemoval = true)
     @Builder.Default
     private List<OrderItem> items = new ArrayList<>();
 
@@ -74,6 +74,11 @@ public class Order extends BaseTimeEntity {
             .finalPrice(BigDecimal.ZERO)
             .items(items)
             .build();
+    }
+
+    public void approve() {
+
+        this.status = OrderStatus.APPROVED;
     }
 
     public void calculateTotalPrice() {
@@ -110,4 +115,5 @@ public class Order extends BaseTimeEntity {
 
         return !isReady();
     }
+
 }

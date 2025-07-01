@@ -2,6 +2,7 @@ package kr.hhplus.be.server.order.infrastructure.event;
 
 import kr.hhplus.be.server.global.utils.JsonUtil;
 import kr.hhplus.be.server.order.domain.order.entity.OrderSnapShot;
+import kr.hhplus.be.server.order.domain.order.event.OrderApprovedEvent;
 import kr.hhplus.be.server.order.domain.order.event.OrderCreatedEvent;
 import kr.hhplus.be.server.order.domain.repository.order.OrderSnapShotCommandRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,17 @@ public class OrderSnapShotListener {
 
         String json = JsonUtil.toJson(event.getOrder());
 
-        OrderSnapShot snapShot = OrderSnapShot.ofCreated(event, json);
+        OrderSnapShot snapShot = OrderSnapShot.ofCreated(event.getOrder(), json);
+
+        repository.save(snapShot);
+    }
+
+    @TransactionalEventListener(phase = TransactionPhase.BEFORE_COMMIT)
+    public void handleOrderApprovedEvent(OrderApprovedEvent event){
+
+        String json = JsonUtil.toJson(event.getOrder());
+
+        OrderSnapShot snapShot = OrderSnapShot.ofApproved(event.getOrder(), json);
 
         repository.save(snapShot);
     }

@@ -2,6 +2,7 @@ package kr.hhplus.be.server.order.infrastructure.adapter;
 
 import java.math.BigDecimal;
 import kr.hhplus.be.server.coupon.application.dto.command.CalculateCouponQuery;
+import kr.hhplus.be.server.coupon.application.dto.command.UseCouponCommand;
 import kr.hhplus.be.server.coupon.application.dto.command.ValidateCouponQuery;
 import kr.hhplus.be.server.coupon.application.port.in.CouponPort;
 import kr.hhplus.be.server.order.application.dto.command.CouponCommand;
@@ -26,5 +27,11 @@ public class CouponAdapter implements OrderCouponPort {
     public BigDecimal calculateDiscountAmount(Long userId, Long couponId, BigDecimal totalPrice) {
 
         return couponPort.calculateDiscountAmount(new CalculateCouponQuery(userId, couponId, totalPrice));
+    }
+
+    @Override
+    public void useCoupon(Long couponId, Long orderId, BigDecimal totalPrice) {
+
+        couponPort.useCoupon(new UseCouponCommand(couponId, orderId, totalPrice));
     }
 }

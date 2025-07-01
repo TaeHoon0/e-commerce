@@ -18,7 +18,9 @@ public class OrderPolicy {
 
         if (order.isNotReady())
             throw new OrderException(OrderErrorCode.INVALID_ORDER_STATUS);
-    }
 
+        if (order.getPayment().isNotApproved())
+            throw new OrderException(OrderErrorCode.PAYMENT_NOT_APPROVED);
+    }
 
 }

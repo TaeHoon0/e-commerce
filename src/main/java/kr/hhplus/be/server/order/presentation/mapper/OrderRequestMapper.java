@@ -29,7 +29,7 @@ public class OrderRequestMapper {
         return new CreateOrderCommand(userId, idempotencyKey, couponCommand, pointCommand, productCommands);
     }
 
-    public static ApproveOrderCommand toCommand(
+    public static ApproveOrderCommand toApproveCommand(
         long userId, ApproveOrderRequest request
     ) {
 
